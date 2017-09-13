@@ -20,17 +20,17 @@ import okhttp3.Response;
  * @author :ryo.yamada
  * @since :1.0 :2017/08/25
  */
-class AreaAsyncTask extends AsyncTask<String, Void, String> {
+class ShopAsyncTask extends AsyncTask<String, Void, String> {
 
-    private final AreaActivity mActivity;
-    private List<LargeAreaDto> largeAreaDtos;
+    private final ShopActivity mActivity;
+    private List<ShopDto> shopList;
 
     /**
      * コンストラクタ
      *
      * @param mActivity Activity
      */
-    AreaAsyncTask(AreaActivity mActivity) {
+    ShopAsyncTask(ShopActivity mActivity) {
         this.mActivity = mActivity;
     }
 
@@ -73,18 +73,18 @@ class AreaAsyncTask extends AsyncTask<String, Void, String> {
         // Gsonの生成
         Gson gson = new GsonBuilder().create();
         // デシリアライズ
-        AreaResultApi areaResultApi = gson.fromJson(result, new TypeToken<AreaResultApi>() {
+        ShopResultApi shopResultApi = gson.fromJson(result, new TypeToken<ShopResultApi>() {
         }.getType());
 
-        largeAreaDtos = areaResultApi.getResults().getLargeAreaDtos();
+        shopList = shopResultApi.getResults().getShop();
 
-        AreaArrayAdapter adapter = new AreaArrayAdapter(mActivity, largeAreaDtos);
-        ListView listView = (ListView) mActivity.findViewById(R.id.list_view);
+        ShopAdapter adapter = new ShopAdapter(mActivity, shopList);
+        ListView listView = (ListView) mActivity.findViewById(R.id.shop_list);
         listView.setAdapter(adapter);
     }
 
-    List<LargeAreaDto> getAreaList(){
-        return largeAreaDtos;
+    List<ShopDto> getShopList(){
+        return shopList;
     }
 
 }

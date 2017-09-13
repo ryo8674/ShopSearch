@@ -7,15 +7,15 @@ package com.example.peter.hotpepper;
  * @author :ryo.yamada
  * @since :1.0 :2017/08/25
  */
-class ResultApi {
-    private Results results;
+class AreaResultApi {
+    private AreaResultsDto results;
 
     /**
      * Gets results.
      *
      * @return the results
      */
-    Results getResults() {
+    AreaResultsDto getResults() {
         return results;
     }
 

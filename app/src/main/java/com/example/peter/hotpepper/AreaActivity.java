@@ -58,10 +58,10 @@ public class AreaActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long Id) {
-                LargeArea largeArea = task.getAreaList().get(position);
+                LargeAreaDto largeAreaDto = task.getAreaList().get(position);
                 Intent intent = new Intent(AreaActivity.this, ShopActivity.class);
-                intent.putExtra("areaCode", largeArea.getCode());
-                Toast.makeText(AreaActivity.this, largeArea.getCode(), Toast.LENGTH_SHORT).show();
+                intent.putExtra("areaCode", largeAreaDto.getCode());
+                Toast.makeText(AreaActivity.this, largeAreaDto.getCode(), Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });

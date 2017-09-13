@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -17,7 +20,7 @@ import java.util.List;
  * @author :ryo.yamada
  * @since :1.0 :2017/08/25
  */
-class AreaArrayAdapter extends ArrayAdapter<LargeAreaDto> {
+class ShopAdapter extends ArrayAdapter<ShopDto> {
 
     private final LayoutInflater inflater;
 
@@ -26,8 +29,8 @@ class AreaArrayAdapter extends ArrayAdapter<LargeAreaDto> {
      *  @param context  context
      * @param list     list
      */
-    AreaArrayAdapter(@NonNull Context context, @NonNull List<LargeAreaDto> list) {
-        super(context, android.R.layout.simple_list_item_1, list);
+    ShopAdapter(@NonNull Context context, @NonNull List<ShopDto> list) {
+        super(context, R.layout.shop_item, list);
         inflater = LayoutInflater.from(context);
     }
 
@@ -37,17 +40,23 @@ class AreaArrayAdapter extends ArrayAdapter<LargeAreaDto> {
         View view = convertView;
         ViewHolder holder;
         if (convertView == null) {
-            view = inflater.inflate(android.R.layout.simple_list_item_1, null);
+            view = inflater.inflate(R.layout.shop_item, null);
             holder = new ViewHolder();
-            holder.areaName = view.findViewById(android.R.id.text1);
+            holder.shopImage = view.findViewById(R.id.shop_image);
+            holder.shopName = view.findViewById(R.id.shop_name);
+            holder.shopGenre = view.findViewById(R.id.shop_genre);
+            holder.shopAccess = view.findViewById(R.id.shop_access);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
 
-        LargeAreaDto largeAreaDto = getItem(position);
-        if (largeAreaDto != null) {
-            holder.areaName.setText(largeAreaDto.getName());
+        ShopDto shop = getItem(position);
+        if (shop != null) {
+            holder.shopName.setText(shop.getName());
+            Picasso.with(getContext()).load(shop.getPhoto().getMobile().getPictS()).into(holder.shopImage);
+            holder.shopGenre.setText(shop.getGenre().getName());
+            holder.shopAccess.setText(shop.getMobileAccess());
         }
 
         return view;
@@ -57,6 +66,9 @@ class AreaArrayAdapter extends ArrayAdapter<LargeAreaDto> {
      * ViewHolder
      */
     private class ViewHolder {
-        TextView areaName;
+        ImageView shopImage;
+        TextView shopName;
+        TextView shopGenre;
+        TextView shopAccess;
     }
 }

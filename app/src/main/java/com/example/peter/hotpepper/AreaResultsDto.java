@@ -5,23 +5,23 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * The type Results.
+ * The type AreaResultsDto.
  *
  * @author :ryo.yamada
  * @since :1.0 :2017/08/25
  */
-class Results {
+class AreaResultsDto {
 
     @SerializedName("large_area")
-    private List<LargeArea> largeAreas;
+    private List<LargeAreaDto> largeAreaDtos;
 
     /**
      * Gets large areas.
      *
      * @return the large areas
      */
-    List<LargeArea> getLargeAreas() {
-        return largeAreas;
+    List<LargeAreaDto> getLargeAreaDtos() {
+        return largeAreaDtos;
     }
 
 }
