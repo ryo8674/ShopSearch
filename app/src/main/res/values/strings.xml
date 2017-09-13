@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Hotpepper</string>
+    <string name="nav_area">エリア一覧から探す</string>
+    <string name="nav_bookmark">ブックマーク</string>
+    <string name="drawer_header">Habanero</string>
+</resources>
