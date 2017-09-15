@@ -24,7 +24,7 @@ public class ShopDetailActivity extends AppCompatActivity{
         Map<String, String> param = new HashMap<>();
         param.put(SHOP_ID, getIntent().getStringExtra("shopCode"));
 
-        ShopAsyncTask task = new ShopAsyncTask(this,1);
+        ShopAsyncTask task = new ShopAsyncTask(this);
         task.execute(UrlUtils.createUri(GOURMET,param));
     }
 

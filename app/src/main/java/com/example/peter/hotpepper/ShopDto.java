@@ -35,7 +35,7 @@ class ShopDto {
         return name;
     }
 
-    String getAccess() {
+    private String getAccess() {
         return access;
     }
 
@@ -47,31 +47,31 @@ class ShopDto {
         return genre;
     }
 
-    String getPrivateRoom() {
+    private String getPrivateRoom() {
         return privateRoom;
     }
 
-    String getCard() {
+    private String getCard() {
         return card;
     }
 
-    String getNonSmoking() {
+    private String getNonSmoking() {
         return nonSmoking;
     }
 
-    String getAddress() {
+    private String getAddress() {
         return address;
     }
 
-    String getCourse() {
+    private String getCourse() {
         return course;
     }
 
-    String getFreeDrink() {
+    private String getFreeDrink() {
         return freeDrink;
     }
 
-    String getFreeFood() {
+    private String getFreeFood() {
         return freeFood;
     }
 
@@ -79,7 +79,7 @@ class ShopDto {
         return photo;
     }
 
-    String getTatami() {
+    private String getTatami() {
         return tatami;
     }
 
@@ -100,8 +100,8 @@ class ShopDto {
     }
 
     private static final String PRIVATE_ROOM = "個室";
-    private static final String EXSITENCE = "あり";
-    private static final String NO_EXSITENCE = "なし";
+    private static final String EXISTENCE = "あり";
+    private static final String NO_EXISTENCE = "なし";
     private static final String CARD = "カード";
     private static final String AVAILABLE = "利用可";
     private static final String UNAVAILABLE = "利用不可";
@@ -111,18 +111,18 @@ class ShopDto {
     private static final String SEPARATE = ",";
     private StringBuilder message;
 
-    String getInstantPrivateRoom() {
+    private String getInstantPrivateRoom() {
         message = new StringBuilder();
         message.append(PRIVATE_ROOM);
-        if (getPrivateRoom().contains(EXSITENCE)) {
-            message.append(EXSITENCE);
-        } else if (getPrivateRoom().contains(NO_EXSITENCE)) {
-            message.append(NO_EXSITENCE);
+        if (getPrivateRoom().contains(EXISTENCE)) {
+            message.append(EXISTENCE);
+        } else if (getPrivateRoom().contains(NO_EXISTENCE)) {
+            message.append(NO_EXISTENCE);
         }
         return message.toString();
     }
 
-    String getInstantCard() {
+    private String getInstantCard() {
         message = new StringBuilder();
         message.append(CARD);
         if (getCard().contains(AVAILABLE)) {
@@ -133,7 +133,7 @@ class ShopDto {
         return message.toString();
     }
 
-    String getInstantNonSmoking() {
+    private String getInstantNonSmoking() {
         message = new StringBuilder();
         if (getNonSmoking().contains(NON_SMOKING)) {
             message.append(NON_SMOKING);

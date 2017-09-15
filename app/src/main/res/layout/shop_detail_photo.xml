@@ -17,6 +17,6 @@
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ブックマーク登録" />
+        android:text="@string/register_bookmark" />
 
 </LinearLayout>

@@ -3,4 +3,5 @@
     <string name="nav_area">エリア一覧から探す</string>
     <string name="nav_bookmark">ブックマーク</string>
     <string name="drawer_header">Habanero</string>
+    <string name="register_bookmark">ブックマーク登録</string>
 </resources>

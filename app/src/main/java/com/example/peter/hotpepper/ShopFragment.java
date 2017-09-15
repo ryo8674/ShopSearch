@@ -19,7 +19,6 @@ public class ShopFragment extends Fragment {
 
     private ListView shopList;
     private View rootView;
-    private Bundle bundle;
 
     public ShopFragment() {
     }
@@ -40,10 +39,10 @@ public class ShopFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        bundle = getArguments();
+        Bundle bundle = getArguments();
         Map<String, String> param = new HashMap<>();
         param.put("large_area", bundle.getString("bundle"));
-        final ShopAsyncTask task = new ShopAsyncTask(rootView,0);
+        final ShopAsyncTask task = new ShopAsyncTask(rootView);
         task.execute(UrlUtils.createUri(GOURMET, param));
 
         shopList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

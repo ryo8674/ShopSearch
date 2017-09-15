@@ -13,15 +13,15 @@ import java.util.List;
 class AreaResultsDto {
 
     @SerializedName("large_area")
-    private List<LargeAreaDto> largeAreaDtos;
+    private List<LargeAreaDto> largeAreaDto;
 
     /**
      * Gets large areas.
      *
      * @return the large areas
      */
-    List<LargeAreaDto> getLargeAreaDtos() {
-        return largeAreaDtos;
+    List<LargeAreaDto> getLargeAreaDto() {
+        return largeAreaDto;
     }
 
 }

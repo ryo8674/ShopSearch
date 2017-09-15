@@ -24,15 +24,12 @@ import java.util.Map;
  */
 class ShopDetailAdapter extends BaseAdapter{
 
-    private LayoutInflater inflater;
-    private Context context;
-    private ShopDto shopDto;
-    private Map<String, String> shopMap;
-    private String[] keys;
+    private final LayoutInflater inflater;
+    private final Map<String, String> shopMap;
+    private final String[] keys;
 
     ShopDetailAdapter(@NonNull Context context, @NonNull ShopDto shopDto) {
-        this.context = context;
-        this.shopDto = shopDto;
+        super();
         shopMap = shopDto.getShopMap();
         keys = shopMap.keySet().toArray(new String[shopMap.size()]);
         inflater = LayoutInflater.from(context);

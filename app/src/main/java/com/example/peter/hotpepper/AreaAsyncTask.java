@@ -43,7 +43,7 @@ class AreaAsyncTask extends AsyncTask<String, Void, String> {
      */
     @Override
     protected String doInBackground(String... uri) {
-        String result = null;
+        String result;
 
         // リクエストオブジェクトの生成
         Request request = new Request.Builder()
@@ -57,6 +57,7 @@ class AreaAsyncTask extends AsyncTask<String, Void, String> {
         // リクエストして結果を受け取る
         try {
             Response response = client.newCall(request).execute();
+            //noinspection ConstantConditions
             result = response.body().string();
         } catch (IOException e) {
             return null;
@@ -79,7 +80,7 @@ class AreaAsyncTask extends AsyncTask<String, Void, String> {
 
         largeAreaDto = new ArrayList<>();
         if (areaResultApi != null) {
-            largeAreaDto = areaResultApi.getResults().getLargeAreaDtos();
+            largeAreaDto = areaResultApi.getResults().getLargeAreaDto();
         }
 
         AreaArrayAdapter adapter = new AreaArrayAdapter(mActivity, largeAreaDto);

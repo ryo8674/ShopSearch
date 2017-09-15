@@ -25,10 +25,12 @@ import okhttp3.Response;
  */
 class ShopAsyncTask extends AsyncTask<String, Void, String> {
 
-    //    private final ShopActivity mActivity;
+    private static final int ROOT_VIEW_FLAG = 0;
+    private static final int ACTIVITY_FLAG = 1;
+
     private List<ShopDto> shopList;
     private View rootView;
-    private int flag;
+    private final int flag;
     private Activity activity;
 
     /**
@@ -36,14 +38,14 @@ class ShopAsyncTask extends AsyncTask<String, Void, String> {
      *
      * @param rootView rootView
      */
-    ShopAsyncTask(View rootView, int flag) {
+    ShopAsyncTask(View rootView) {
         this.rootView = rootView;
-        this.flag = flag;
+        this.flag = ROOT_VIEW_FLAG;
     }
 
-    ShopAsyncTask(Activity activity, int flag) {
+    ShopAsyncTask(Activity activity) {
         this.activity = activity;
-        this.flag = flag;
+        this.flag = ACTIVITY_FLAG;
     }
 
     /**
@@ -54,7 +56,7 @@ class ShopAsyncTask extends AsyncTask<String, Void, String> {
      */
     @Override
     protected String doInBackground(String... uri) {
-        String result = null;
+        String result;
 
         // リクエストオブジェクトの生成
         Request request = new Request.Builder()
@@ -68,9 +70,10 @@ class ShopAsyncTask extends AsyncTask<String, Void, String> {
         // リクエストして結果を受け取る
         try {
             Response response = client.newCall(request).execute();
+            //noinspection ConstantConditions
             result = response.body().string();
         } catch (IOException e) {
-            e.printStackTrace();
+            return null;
         }
         return result;
     }
@@ -92,13 +95,12 @@ class ShopAsyncTask extends AsyncTask<String, Void, String> {
             shopList = shopResultApi.getResults().getShop();
         }
         ListView listView;
-        if (flag == 0) {
+        if (flag == ROOT_VIEW_FLAG) {
             ShopAdapter adapter = new ShopAdapter(rootView.getContext(), shopList);
             listView = rootView.findViewById(R.id.shop_list);
-            String a = rootView.getContext().toString();
             listView.setAdapter(adapter);
         } else {
-            if (shopList.size() != 0) {
+            if (shopList.size() != ROOT_VIEW_FLAG) {
                 ShopDetailAdapter adapter = new ShopDetailAdapter(activity, shopList.get(0));
                 listView = activity.findViewById(R.id.shop_detail_list);
                 listView.setClickable(false);
