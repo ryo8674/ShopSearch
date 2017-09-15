@@ -31,7 +31,7 @@ class ShopAdapter extends ArrayAdapter<ShopDto> {
      */
     ShopAdapter(@NonNull Context context, @NonNull List<ShopDto> list) {
         super(context, R.layout.shop_item, list);
-        inflater = LayoutInflater.from(context);
+        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @NonNull
@@ -46,6 +46,7 @@ class ShopAdapter extends ArrayAdapter<ShopDto> {
             holder.shopName = view.findViewById(R.id.shop_name);
             holder.shopGenre = view.findViewById(R.id.shop_genre);
             holder.shopAccess = view.findViewById(R.id.shop_access);
+            holder.shopInfo = view.findViewById(R.id.shop_info);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -57,6 +58,7 @@ class ShopAdapter extends ArrayAdapter<ShopDto> {
             Picasso.with(getContext()).load(shop.getPhoto().getMobile().getPictS()).into(holder.shopImage);
             holder.shopGenre.setText(shop.getGenre().getName());
             holder.shopAccess.setText(shop.getMobileAccess());
+            holder.shopInfo.setText(shop.getShopInfo());
         }
 
         return view;
@@ -70,5 +72,6 @@ class ShopAdapter extends ArrayAdapter<ShopDto> {
         TextView shopName;
         TextView shopGenre;
         TextView shopAccess;
+        TextView shopInfo;
     }
 }

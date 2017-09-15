@@ -1,8 +1,8 @@
 package com.example.peter.hotpepper;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 public class ShopActivity extends AppCompatActivity {
@@ -22,20 +22,15 @@ public class ShopActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shop);
 
         String areaCode = getIntent().getStringExtra("areaCode");
+        Bundle bundle = new Bundle();
+        bundle.putString("bundle",areaCode);
 
-        //URIを生成
-        Uri.Builder uriBuilder = new Uri.Builder();
-        uriBuilder.scheme(HTTP_PROTOCOL);
-        uriBuilder.authority(AUTHORITY);
-        uriBuilder.path(PATH);
-        uriBuilder.appendQueryParameter(USER_PARAMETER, USER_KEY);
-        uriBuilder.appendQueryParameter(FORMAT_PARAMETER, FORMAT_KEY);
-        uriBuilder.appendQueryParameter(LARGE_AREA_PARAMETER, areaCode);
-
-        String utiStr = uriBuilder.toString();
-
-        final ShopAsyncTask task = new ShopAsyncTask(this);
-        task.execute(utiStr);
+        // ListView表示用のフラグメントをセット
+        ShopFragment shopFragment = new ShopFragment();
+        shopFragment.setArguments(bundle);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, shopFragment);
+        transaction.commit();
 
     }
 }

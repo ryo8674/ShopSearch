@@ -1,6 +1,8 @@
 package com.example.peter.hotpepper;
 
+import android.app.Activity;
 import android.os.AsyncTask;
+import android.view.View;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -8,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -22,16 +25,25 @@ import okhttp3.Response;
  */
 class ShopAsyncTask extends AsyncTask<String, Void, String> {
 
-    private final ShopActivity mActivity;
+    //    private final ShopActivity mActivity;
     private List<ShopDto> shopList;
+    private View rootView;
+    private int flag;
+    private Activity activity;
 
     /**
      * コンストラクタ
      *
-     * @param mActivity Activity
+     * @param rootView rootView
      */
-    ShopAsyncTask(ShopActivity mActivity) {
-        this.mActivity = mActivity;
+    ShopAsyncTask(View rootView, int flag) {
+        this.rootView = rootView;
+        this.flag = flag;
+    }
+
+    ShopAsyncTask(Activity activity, int flag) {
+        this.activity = activity;
+        this.flag = flag;
     }
 
     /**
@@ -75,15 +87,28 @@ class ShopAsyncTask extends AsyncTask<String, Void, String> {
         // デシリアライズ
         ShopResultApi shopResultApi = gson.fromJson(result, new TypeToken<ShopResultApi>() {
         }.getType());
+        shopList = new ArrayList<>();
+        if (shopResultApi != null) {
+            shopList = shopResultApi.getResults().getShop();
+        }
+        ListView listView;
+        if (flag == 0) {
+            ShopAdapter adapter = new ShopAdapter(rootView.getContext(), shopList);
+            listView = rootView.findViewById(R.id.shop_list);
+            String a = rootView.getContext().toString();
+            listView.setAdapter(adapter);
+        } else {
+            if (shopList.size() != 0) {
+                ShopDetailAdapter adapter = new ShopDetailAdapter(activity, shopList.get(0));
+                listView = activity.findViewById(R.id.shop_detail_list);
+                listView.setClickable(false);
+                listView.setAdapter(adapter);
+            }
+        }
 
-        shopList = shopResultApi.getResults().getShop();
-
-        ShopAdapter adapter = new ShopAdapter(mActivity, shopList);
-        ListView listView = (ListView) mActivity.findViewById(R.id.shop_list);
-        listView.setAdapter(adapter);
     }
 
-    List<ShopDto> getShopList(){
+    List<ShopDto> getShopList() {
         return shopList;
     }
 

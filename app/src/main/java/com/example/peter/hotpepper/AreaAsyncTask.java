@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -23,7 +24,7 @@ import okhttp3.Response;
 class AreaAsyncTask extends AsyncTask<String, Void, String> {
 
     private final AreaActivity mActivity;
-    private List<LargeAreaDto> largeAreaDtos;
+    private List<LargeAreaDto> largeAreaDto;
 
     /**
      * コンストラクタ
@@ -58,7 +59,7 @@ class AreaAsyncTask extends AsyncTask<String, Void, String> {
             Response response = client.newCall(request).execute();
             result = response.body().string();
         } catch (IOException e) {
-            e.printStackTrace();
+            return null;
         }
         return result;
     }
@@ -76,15 +77,18 @@ class AreaAsyncTask extends AsyncTask<String, Void, String> {
         AreaResultApi areaResultApi = gson.fromJson(result, new TypeToken<AreaResultApi>() {
         }.getType());
 
-        largeAreaDtos = areaResultApi.getResults().getLargeAreaDtos();
+        largeAreaDto = new ArrayList<>();
+        if (areaResultApi != null) {
+            largeAreaDto = areaResultApi.getResults().getLargeAreaDtos();
+        }
 
-        AreaArrayAdapter adapter = new AreaArrayAdapter(mActivity, largeAreaDtos);
+        AreaArrayAdapter adapter = new AreaArrayAdapter(mActivity, largeAreaDto);
         ListView listView = (ListView) mActivity.findViewById(R.id.list_view);
         listView.setAdapter(adapter);
     }
 
-    List<LargeAreaDto> getAreaList(){
-        return largeAreaDtos;
+    List<LargeAreaDto> getAreaList() {
+        return largeAreaDto;
     }
 
 }

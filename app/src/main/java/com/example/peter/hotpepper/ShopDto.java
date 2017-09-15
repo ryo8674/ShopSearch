@@ -2,6 +2,9 @@ package com.example.peter.hotpepper;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 class ShopDto {
 
     private String id;
@@ -78,5 +81,83 @@ class ShopDto {
 
     String getTatami() {
         return tatami;
+    }
+
+    String getShopInfo() {
+        StringBuilder message = new StringBuilder();
+        if (!getInstantPrivateRoom().isEmpty()) {
+            message.append(getInstantPrivateRoom()).append(SEPARATE);
+        }
+        if (!getInstantCard().isEmpty()) {
+            message.append(getInstantCard()).append(SEPARATE);
+        }
+        if (getInstantNonSmoking().isEmpty() && message.length() != 0) {
+            message.deleteCharAt(message.length() - 1);
+        } else {
+            message.append(getInstantNonSmoking());
+        }
+        return message.toString();
+    }
+
+    private static final String PRIVATE_ROOM = "個室";
+    private static final String EXSITENCE = "あり";
+    private static final String NO_EXSITENCE = "なし";
+    private static final String CARD = "カード";
+    private static final String AVAILABLE = "利用可";
+    private static final String UNAVAILABLE = "利用不可";
+    private static final String NON_SMOKING = "全面禁煙";
+    private static final String PARTLY_SMOKING = "一部禁煙";
+    private static final String SMOKING = "禁煙席なし";
+    private static final String SEPARATE = ",";
+    private StringBuilder message;
+
+    String getInstantPrivateRoom() {
+        message = new StringBuilder();
+        message.append(PRIVATE_ROOM);
+        if (getPrivateRoom().contains(EXSITENCE)) {
+            message.append(EXSITENCE);
+        } else if (getPrivateRoom().contains(NO_EXSITENCE)) {
+            message.append(NO_EXSITENCE);
+        }
+        return message.toString();
+    }
+
+    String getInstantCard() {
+        message = new StringBuilder();
+        message.append(CARD);
+        if (getCard().contains(AVAILABLE)) {
+            message.append(AVAILABLE);
+        } else if (getCard().contains(UNAVAILABLE)) {
+            message.append(UNAVAILABLE);
+        }
+        return message.toString();
+    }
+
+    String getInstantNonSmoking() {
+        message = new StringBuilder();
+        if (getNonSmoking().contains(NON_SMOKING)) {
+            message.append(NON_SMOKING);
+        } else if (getNonSmoking().contains(PARTLY_SMOKING)) {
+            message.append(PARTLY_SMOKING);
+        } else if (getNonSmoking().contains(SMOKING)) {
+            message.append(SMOKING);
+        }
+        return message.toString();
+    }
+
+    Map<String, String> getShopMap() {
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("pic", getPhoto().getMobile().getPictL());
+        map.put("ジャンル", getGenre().getName());
+        map.put("アクセス", getAccess());
+        map.put("住所", getAddress());
+        map.put("カード", getCard());
+        map.put("禁煙席", getNonSmoking());
+        map.put("コース", getCourse());
+        map.put("飲み放題", getFreeDrink());
+        map.put("食べ放題", getFreeFood());
+        map.put("座敷", getTatami());
+
+        return map;
     }
 }

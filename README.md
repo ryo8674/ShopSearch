@@ -11,13 +11,10 @@
 
 ## 進捗
 * エリア選択 - 済
-  * APIからリスト取得 - 済
   * NavigationDrawer - 済
-* 店舗選択 - 50%
-  * レイアウト - 80%
-  * 非同期 - 済
-  * DTO - 済
-  * Fragment - 0%
-  * NavigationDrawer - 0%
+* 店舗選択 - 済
 * 店舗詳細
+  * DB周りの実装
 * ブックマーク機能
+* NavigationDrawerの適用
+  * 画面遷移
