@@ -31,6 +31,10 @@ class ShopDto {
         return id;
     }
 
+    void setId(String id) {
+        this.id = id;
+    }
+
     String getName() {
         return name;
     }

@@ -12,11 +12,13 @@
         android:src="@mipmap/ic_launcher"
         tools:ignore="ContentDescription" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/bookmark_btn"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/register_bookmark" />
+        android:layout_gravity="center"
+        android:textOff="@string/register_bookmark"
+        android:textOn="@string/delete_bookmark"
+        android:onClick="registBookmark"/>
 
 </LinearLayout>

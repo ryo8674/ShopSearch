@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
 
@@ -22,11 +22,11 @@ import java.util.Map;
  * @author :ryo.yamada
  * @since :1.0 :2017/08/25
  */
-class ShopDetailAdapter extends BaseAdapter{
-
+class ShopDetailAdapter extends BaseAdapter {
     private final LayoutInflater inflater;
     private final Map<String, String> shopMap;
     private final String[] keys;
+    Context context;
 
     ShopDetailAdapter(@NonNull Context context, @NonNull ShopDto shopDto) {
         super();
@@ -65,6 +65,7 @@ class ShopDetailAdapter extends BaseAdapter{
                 holder.shopImage.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, parent.getRootView().getWidth()));
                 holder.shopImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 holder.bookmarkBtn = view.findViewById(R.id.bookmark_btn);
+
             } else {
                 view = inflater.inflate(R.layout.shop_detail_item, null);
                 holder.shopInfoTitle = view.findViewById(R.id.detail_title);
@@ -77,6 +78,7 @@ class ShopDetailAdapter extends BaseAdapter{
         if (position == 0) {
             Picasso.with(view.getContext()).load(getItem(position)).into(holder.shopImage);
             Picasso.with(view.getContext()).setIndicatorsEnabled(true);
+
         } else {
             // TODO: textのセット
             holder.shopInfoTitle.setText(keys[position]);
@@ -91,13 +93,10 @@ class ShopDetailAdapter extends BaseAdapter{
      */
     private class ViewHolder {
         ImageView shopImage;
-        Button bookmarkBtn;
+        ToggleButton bookmarkBtn;
         TextView shopInfoTitle;
         TextView shopInfoContent;
     }
 
-    @Override
-    public boolean isEnabled(int position) {
-        return false;
-    }
+
 }
