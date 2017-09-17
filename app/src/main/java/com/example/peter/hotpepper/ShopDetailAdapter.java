@@ -59,7 +59,7 @@ class ShopDetailAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             if (position == 0) {
-                view = inflater.inflate(R.layout.shop_detail_photo, null);
+                view = inflater.inflate(R.layout.shop_detail_header, null);
                 holder.shopImage = view.findViewById(R.id.detail_photo);
                 holder.shopImage.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, parent.getRootView().getWidth()));
                 holder.shopImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
