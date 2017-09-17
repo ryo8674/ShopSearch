@@ -18,6 +18,11 @@ import java.util.Map;
 public class ShopFragment extends Fragment {
 
     private static final String GOURMET = "gourmet";
+    private static final String SHOP_CODE = "shop_code";
+    private static final String SEPARATE = ",";
+    private static final String ID = "id";
+    private static final String LARGE_AREA = "large_area";
+    private static final String BUNDLE = "bundle";
 
     private ListView shopList;
     private View rootView;
@@ -45,30 +50,30 @@ public class ShopFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        List<ShopDto> list = null;
         Map<String, String> param = new HashMap<>();
         Bundle bundle = getArguments();
         if (bundle != null) {
-            param.put("large_area", bundle.getString("bundle"));
+            param.put(LARGE_AREA, bundle.getString(BUNDLE));
         } else {
-            //TODO: DB検索, List -> mapに変換
             StringBuilder builder = new StringBuilder();
-            List<ShopDto> list = shopDao.findAll();
+            list = shopDao.findAll();
             for (ShopDto shopDto : list) {
                 builder.append(shopDto.getId());
                 if (!shopDto.equals(list.get(list.size() - 1))) {
-                    builder.append(",");
+                    builder.append(SEPARATE);
                 }
             }
-            param.put("id", builder.toString());
+            param.put(ID, builder.toString());
         }
-        final ShopAsyncTask task = new ShopAsyncTask(rootView);
+        final ShopAsyncTask task = new ShopAsyncTask(rootView, list);
         task.execute(UrlUtils.createUri(GOURMET, param));
 
         shopList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(view.getContext(), ShopDetailActivity.class);
-                intent.putExtra("shopCode", task.getShopList().get(position).getId());
+                intent.putExtra(SHOP_CODE, task.getShopList().get(position).getId());
                 startActivity(intent);
             }
         });

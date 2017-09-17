@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
 
@@ -26,7 +26,6 @@ class ShopDetailAdapter extends BaseAdapter {
     private final LayoutInflater inflater;
     private final Map<String, String> shopMap;
     private final String[] keys;
-    Context context;
 
     ShopDetailAdapter(@NonNull Context context, @NonNull ShopDto shopDto) {
         super();
@@ -80,7 +79,6 @@ class ShopDetailAdapter extends BaseAdapter {
             Picasso.with(view.getContext()).setIndicatorsEnabled(true);
 
         } else {
-            // TODO: textのセット
             holder.shopInfoTitle.setText(keys[position]);
             holder.shopInfoContent.setText(getItem(position));
         }
@@ -93,7 +91,7 @@ class ShopDetailAdapter extends BaseAdapter {
      */
     private class ViewHolder {
         ImageView shopImage;
-        ToggleButton bookmarkBtn;
+        Button bookmarkBtn;
         TextView shopInfoTitle;
         TextView shopInfoContent;
     }

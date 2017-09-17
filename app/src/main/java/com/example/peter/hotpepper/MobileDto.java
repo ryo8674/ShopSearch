@@ -12,15 +12,7 @@ class MobileDto {
         return pictL;
     }
 
-    void setPictL(String pictL) {
-        this.pictL = pictL;
-    }
-
     String getPictS() {
         return pictS;
-    }
-
-    void setPictS(String pictS) {
-        this.pictS = pictS;
     }
 }

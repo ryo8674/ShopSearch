@@ -2,6 +2,7 @@ package com.example.peter.hotpepper;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
 
@@ -32,14 +33,16 @@ class ShopAsyncTask extends AsyncTask<String, Void, String> {
     private View rootView;
     private final int flag;
     private Activity activity;
+    private List<ShopDto> idList;
 
     /**
      * コンストラクタ
      *
      * @param rootView rootView
      */
-    ShopAsyncTask(View rootView) {
+    ShopAsyncTask(View rootView, List<ShopDto> idList) {
         this.rootView = rootView;
+        this.idList = idList;
         this.flag = ROOT_VIEW_FLAG;
     }
 
@@ -96,15 +99,22 @@ class ShopAsyncTask extends AsyncTask<String, Void, String> {
         }
         ListView listView;
         if (flag == ROOT_VIEW_FLAG) {
+            if (shopList == null) {
+                shopList = new ArrayList<>();
+            }
+            if (idList != null) {
+                shopList = sortList(shopList, idList);
+            }
             ShopAdapter adapter = new ShopAdapter(rootView.getContext(), shopList);
             listView = rootView.findViewById(R.id.shop_list);
             listView.setAdapter(adapter);
         } else {
-            if (shopList.size() != ROOT_VIEW_FLAG) {
+            if (shopList.size() != 0) {
                 ShopDetailAdapter adapter = new ShopDetailAdapter(activity, shopList.get(0));
                 listView = activity.findViewById(R.id.shop_detail_list);
-                listView.setClickable(false);
                 listView.setAdapter(adapter);
+                Toolbar toolbar = activity.findViewById(R.id.toolbar);
+                toolbar.setTitle(shopList.get(0).getName());
             }
         }
 
@@ -112,6 +122,23 @@ class ShopAsyncTask extends AsyncTask<String, Void, String> {
 
     List<ShopDto> getShopList() {
         return shopList;
+    }
+
+    /**
+     * ブックマークを登録順にソートするメソッド
+     */
+    private List<ShopDto> sortList(List<ShopDto> targetList, List<ShopDto> idList) {
+        List<ShopDto> list = new ArrayList<>();
+        for (ShopDto id : idList) {
+            for (ShopDto target : targetList) {
+                if (target.getId().equals(id.getId())) {
+                    list.add(target);
+                    break;
+                }
+            }
+        }
+
+        return list;
     }
 
 }

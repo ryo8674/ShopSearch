@@ -38,13 +38,4 @@ class LargeAreaDto {
     String getCode() {
         return code;
     }
-
-    /**
-     * Sets code.
-     *
-     * @param code the code
-     */
-    void setCode(String code) {
-        this.code = code;
-    }
 }

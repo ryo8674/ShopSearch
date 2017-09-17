@@ -26,12 +26,13 @@ class ShopAdapter extends ArrayAdapter<ShopDto> {
 
     /**
      * コンストラクタ
-     *  @param context  context
-     * @param list     list
+     *
+     * @param context context
+     * @param list    list
      */
     ShopAdapter(@NonNull Context context, @NonNull List<ShopDto> list) {
         super(context, R.layout.shop_item, list);
-        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @NonNull

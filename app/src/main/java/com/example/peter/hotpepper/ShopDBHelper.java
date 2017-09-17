@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class ShopDBHelper extends SQLiteOpenHelper {
+class ShopDBHelper extends SQLiteOpenHelper {
 
     /**
      * DB名
@@ -28,7 +28,7 @@ public class ShopDBHelper extends SQLiteOpenHelper {
      */
     private static final String DROP_TABLE_SQL = "drop table if exists bookmark";
 
-    public ShopDBHelper(Context context) {
+    ShopDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 

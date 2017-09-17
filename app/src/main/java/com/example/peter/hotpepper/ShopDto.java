@@ -113,6 +113,16 @@ class ShopDto {
     private static final String PARTLY_SMOKING = "一部禁煙";
     private static final String SMOKING = "禁煙席なし";
     private static final String SEPARATE = ",";
+    private static final String GENRE = "ジャンル";
+    private static final String ACCESS = "アクセス";
+    private static final String ADDRESS = "住所";
+    private static final String SMOKING_SEAT = "禁煙席";
+    private static final String COURSE = "コース";
+    private static final String FREE_DRINK = "飲み放題";
+    private static final String FREE_FOOD = "食べ放題";
+    private static final String TATAMI = "座敷";
+    private static final String BLANK = "";
+
     private StringBuilder message;
 
     private String getInstantPrivateRoom() {
@@ -151,16 +161,17 @@ class ShopDto {
 
     Map<String, String> getShopMap() {
         Map<String, String> map = new LinkedHashMap<>();
-        map.put("pic", getPhoto().getMobile().getPictL());
-        map.put("ジャンル", getGenre().getName());
-        map.put("アクセス", getAccess());
-        map.put("住所", getAddress());
-        map.put("カード", getCard());
-        map.put("禁煙席", getNonSmoking());
-        map.put("コース", getCourse());
-        map.put("飲み放題", getFreeDrink());
-        map.put("食べ放題", getFreeFood());
-        map.put("座敷", getTatami());
+        map.put(BLANK, getPhoto().getMobile().getPictL());
+        map.put(GENRE, getGenre().getName());
+        map.put(ACCESS, getAccess());
+        map.put(ADDRESS, getAddress());
+        map.put(CARD, getCard());
+        map.put(PRIVATE_ROOM, getPrivateRoom());
+        map.put(SMOKING_SEAT, getNonSmoking());
+        map.put(COURSE, getCourse());
+        map.put(FREE_DRINK, getFreeDrink());
+        map.put(FREE_FOOD, getFreeFood());
+        map.put(TATAMI, getTatami());
 
         return map;
     }

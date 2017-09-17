@@ -6,8 +6,4 @@ class PhotoDto {
     MobileDto getMobile() {
         return mobile;
     }
-
-    void setMobile(MobileDto mobile) {
-        this.mobile = mobile;
-    }
 }
