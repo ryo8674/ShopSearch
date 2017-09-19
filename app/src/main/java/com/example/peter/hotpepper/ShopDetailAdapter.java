@@ -98,3 +98,45 @@ class ShopDetailAdapter extends BaseAdapter {
 
 
 }
+
+
+// public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+//         View view = convertView;
+//         ViewHolder holder = null;
+//         ImageViewHolder imageHolder = null;
+
+//         if (view == null) {
+//             holder = null;
+//             imageHolder = null;
+//             if (position == 0) {
+//                 view = inflater.inflate(R.layout.detail_head, parent, false);
+//                 imageHolder = new ImageViewHolder(view);
+//                 view.setTag(imageHolder);
+//             } else {
+//                 view = inflater.inflate(R.layout.detail_content, parent, false);
+//                 holder = new ViewHolder(view);
+//                 view.setTag(holder);
+//             }
+//         } else {
+//             if (!(view.getTag() instanceof ViewHolder)) {
+//                 view = inflater.inflate(R.layout.detail_content, parent, false);
+//                 holder = new ViewHolder(view);
+//                 view.setTag(holder);
+//             } else if (position == 0) {
+//                 view = inflater.inflate(R.layout.detail_head, parent, false);
+//                 imageHolder = new ImageViewHolder(view);
+//                 view.setTag(imageHolder);
+//             } else {
+//                 holder = (ViewHolder) view.getTag();
+//             }
+//         }
+
+//         if (position == 0) {
+//             Picasso.with(view.getContext()).load(getItem(position)).into(imageHolder.detailImage);
+//         } else {
+//             holder.detailTitle.setText(keys[position]);
+//             holder.detailInfo.setText(getItem(position));
+//         }
+
+//         return view;
+//     }
