@@ -41,7 +41,7 @@ class ShopAdapter extends ArrayAdapter<ShopDto> {
         View view = convertView;
         ViewHolder holder;
         if (convertView == null) {
-            view = inflater.inflate(R.layout.shop_item, null);
+            view = inflater.inflate(R.layout.shop_item, parent, false);
             holder = new ViewHolder();
             holder.shopImage = view.findViewById(R.id.shop_image);
             holder.shopName = view.findViewById(R.id.shop_name);

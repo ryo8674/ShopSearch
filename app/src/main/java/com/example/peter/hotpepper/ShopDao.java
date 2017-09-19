@@ -42,10 +42,11 @@ class ShopDao {
         return list;
     }
 
-    ShopDto findById(ShopDto shopDto) {
-        String[] selection = new String[]{shopDto.getId()};
-        Cursor cursor = db.query(TABLE_NAME, COLUMNS, SELECTION_ID, selection, null, null, COLUMN_DATE);
-
+    ShopDto findById(String id) {
+        Cursor cursor = db.query(TABLE_NAME, COLUMNS, SELECTION_ID + "'" + id + "'", null, null, null, COLUMN_DATE);
+        if (cursor.getCount() == 0) {
+            return null;
+        }
         cursor.moveToNext();
         ShopDto shop = new ShopDto();
         shop.setId(cursor.getString(0));

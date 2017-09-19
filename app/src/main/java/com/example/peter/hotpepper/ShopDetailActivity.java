@@ -18,16 +18,17 @@ public class ShopDetailActivity extends BaseActivity {
     private static final String SHOP_CODE = "shop_code";
 
     private ShopAsyncTask task;
+    private ShopDBHelper shopDBHelper;
     private ShopDao shopDao;
     private SQLiteDatabase db;
-    private Boolean flag = false;
+    static Boolean flag;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.setLayout(R.layout.activity_deteil);
         super.onCreate(savedInstanceState);
 
-        ShopDBHelper shopDBHelper = new ShopDBHelper(this);
+        shopDBHelper = new ShopDBHelper(this);
         db = shopDBHelper.getWritableDatabase();
         shopDao = new ShopDao(db);
 
@@ -35,6 +36,7 @@ public class ShopDetailActivity extends BaseActivity {
         String shopId = getIntent().getStringExtra(SHOP_CODE);
         param.put(SHOP_ID, shopId);
 
+        flag = buttonFlag(shopId);
         task = new ShopAsyncTask(ShopDetailActivity.this);
         task.execute(UrlUtils.createUri(GOURMET, param));
     }
@@ -54,6 +56,12 @@ public class ShopDetailActivity extends BaseActivity {
         }
         db.setTransactionSuccessful();
         db.endTransaction();
+    }
+
+    private boolean buttonFlag(String id){
+        db = shopDBHelper.getReadableDatabase();
+        shopDao = new ShopDao(db);
+        return shopDao.findById(id) != null;
     }
 
 }

@@ -29,11 +29,15 @@ class UrlUtils {
         uriBuilder.appendQueryParameter(COUNT_KEY, MAX_COUNT);
     }
 
+    /**
+     * リクエストパラメータなしのUriを生成
+     */
     static String createUri(String path) {
         initUri(path);
         return uriBuilder.toString();
     }
 
+    /** Map型に格納したリクエストパラメータを付加したUriを生成 */
     static String createUri(String path, Map<String, String> param) {
         initUri(path);
         for (Map.Entry<String, String> entry : param.entrySet()) {
