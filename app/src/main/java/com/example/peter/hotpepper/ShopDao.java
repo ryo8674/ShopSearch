@@ -9,7 +9,7 @@ import java.util.List;
 
 class ShopDao {
 
-    private static final String SELECTION_ID = "shop_id=";
+    private static final String SELECTION_ID = "shop_id=?";
     private static final String TABLE_NAME = "bookmark";
     private static final String COLUMN_ID = "shop_id";
     private static final String COLUMN_DATE = "date";
@@ -43,7 +43,8 @@ class ShopDao {
     }
 
     ShopDto findById(String id) {
-        Cursor cursor = db.query(TABLE_NAME, COLUMNS, SELECTION_ID + "'" + id + "'", null, null, null, COLUMN_DATE);
+        String[] selectionArgs = {id};
+        Cursor cursor = db.query(TABLE_NAME, COLUMNS, SELECTION_ID, selectionArgs, null, null, COLUMN_DATE);
         if (cursor.getCount() == 0) {
             return null;
         }
@@ -56,6 +57,7 @@ class ShopDao {
     }
 
     void delete(ShopDto shopDto) {
-        db.delete(TABLE_NAME, SELECTION_ID + "'" + shopDto.getId() + "'", null);
+        String[] whereArgs = {shopDto.getId()};
+        db.delete(TABLE_NAME, SELECTION_ID, whereArgs);
     }
 }
