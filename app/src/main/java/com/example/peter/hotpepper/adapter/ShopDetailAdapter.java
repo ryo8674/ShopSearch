@@ -1,4 +1,4 @@
-package com.example.peter.hotpepper;
+package com.example.peter.hotpepper.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -12,27 +12,34 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.peter.hotpepper.R;
+import com.example.peter.hotpepper.activity.ShopDetailActivity;
+import com.example.peter.hotpepper.dto.ShopDto;
 import com.squareup.picasso.Picasso;
 
 import java.util.Map;
 
+import static com.example.peter.hotpepper.util.Constants.DELETE_BUTTON;
+import static com.example.peter.hotpepper.util.Constants.REGISTER_BUTTON;
+
 /**
- * 独自アダプター
- *
- * @author :ryo.yamada
- * @since :1.0 :2017/08/25
+ * 店舗詳細画面のリスト用のAdapter
  */
-class ShopDetailAdapter extends BaseAdapter {
+public class ShopDetailAdapter extends BaseAdapter {
     private final LayoutInflater inflater;
     private final Map<String, String> shopMap;
     private final String[] keys;
 
-    ShopDetailAdapter(@NonNull Context context, @NonNull ShopDto shopDto) {
+    /**
+     * コンストラクタ
+     */
+    public ShopDetailAdapter(@NonNull Context context, @NonNull ShopDto results) {
         super();
-        shopMap = shopDto.getShopMap();
-        keys = shopMap.keySet().toArray(new String[shopMap.size()]);
+        shopMap = results.getShopDetailInfo();
+        keys = shopMap.keySet().toArray(new String[getCount()]);
         inflater = LayoutInflater.from(context);
     }
+
 
     @Override
     public int getCount() {
@@ -54,52 +61,50 @@ class ShopDetailAdapter extends BaseAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
         ViewHolder holder;
-        ImageViewHolder imageViewHolder;
+        ImageViewHolder imageHolder;
 
         if (position == 0) {
-            view = inflater.inflate(R.layout.shop_detail_header, parent, false);
-            imageViewHolder = new ImageViewHolder(view);
-            imageViewHolder.shopImage.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, parent.getRootView().getWidth()));
-            initButton(imageViewHolder.bookmarkBtn);
-            view.setTag(imageViewHolder);
-
-            Picasso.with(view.getContext()).load(getItem(position)).into(imageViewHolder.shopImage);
-            Picasso.with(view.getContext()).setIndicatorsEnabled(true);
+            view = inflater.inflate(R.layout.detail_head, parent, false);
+            imageHolder = new ImageViewHolder(view);
+            imageHolder.detailImage.setLayoutParams(new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, parent.getRootView().getWidth()));
+            initButton(imageHolder.bookmarkBtn);
+            view.setTag(imageHolder);
+            Picasso.with(view.getContext()).load(getItem(position)).into(imageHolder.detailImage);
         } else {
             if (view == null) {
-                view = inflater.inflate(R.layout.shop_detail_item, parent, false);
+                view = inflater.inflate(R.layout.detail_content, parent, false);
                 holder = new ViewHolder(view);
                 view.setTag(holder);
 
             } else {
                 if (!(view.getTag() instanceof ViewHolder)) {
-                    view = inflater.inflate(R.layout.shop_detail_item, parent, false);
+                    view = inflater.inflate(R.layout.detail_content, parent, false);
                     holder = new ViewHolder(view);
                     view.setTag(holder);
                 } else {
                     holder = (ViewHolder) view.getTag();
                 }
             }
-            holder.shopInfoTitle.setText(keys[position]);
-            holder.shopInfoContent.setText(getItem(position));
+            holder.detailTitle.setText(keys[position]);
+            holder.detailInfo.setText(getItem(position));
         }
         return view;
     }
 
-
     /**
-     * ViewHolder
+     * 先頭行以外のViewHolder
      */
     private class ViewHolder {
-        private final TextView shopInfoTitle;
-        private final TextView shopInfoContent;
+        final TextView detailTitle;
+        final TextView detailInfo;
 
         /**
          * コンストラクタ
          */
         private ViewHolder(View view) {
-            shopInfoTitle = view.findViewById(R.id.detail_title);
-            shopInfoContent = view.findViewById(R.id.detail_content);
+            detailTitle = view.findViewById(R.id.detail_title);
+            detailInfo = view.findViewById(R.id.detail_info);
         }
     }
 
@@ -107,23 +112,26 @@ class ShopDetailAdapter extends BaseAdapter {
      * 先頭行用のViewHolder
      */
     private class ImageViewHolder {
-        private final ImageView shopImage;
-        private final Button bookmarkBtn;
+        final ImageView detailImage;
+        final Button bookmarkBtn;
 
         /**
          * コンストラクタ
          */
         private ImageViewHolder(View view) {
-            shopImage = view.findViewById(R.id.detail_photo);
-            bookmarkBtn = view.findViewById(R.id.bookmark_btn);
+            detailImage = view.findViewById(R.id.detail_image);
+            bookmarkBtn = view.findViewById(R.id.detail_button);
         }
     }
 
+    /**
+     * Buttonのテキストの設定
+     */
     private void initButton(Button button) {
         if (ShopDetailActivity.flag) {
-            button.setText("ブックマークを取り消す");
+            button.setText(DELETE_BUTTON);
         } else {
-            button.setText("このお店をブックマーク");
+            button.setText(REGISTER_BUTTON);
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.peter.hotpepper;
+package com.example.peter.hotpepper.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,26 +12,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import com.example.peter.hotpepper.R;
+
+/**
+ * ベースとなるActivity
+ */
+public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private int layoutResource;
-    private Toolbar toolbar;
-
-    void setLayout(int layoutResource) {
-        this.layoutResource = layoutResource;
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layoutResource);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setToolbarTitle("");
-        setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        if (layoutResource == R.layout.activity_deteil) {
+        setSupportActionBar(toolbar);
+        if (layoutResource == R.layout.activity_detail) {
+            //noinspection ConstantConditions
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         } else {
             drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -49,6 +49,7 @@ class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigat
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Intent intent = null;
+
         switch (item.getItemId()) {
             case R.id.nav_area:
                 intent = new Intent(this, AreaActivity.class);
@@ -57,13 +58,10 @@ class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigat
                 intent = new Intent(this, BookmarkActivity.class);
                 break;
         }
+
         startActivity(intent);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    void setToolbarTitle(String toolbarTitle) {
-        toolbar.setTitle(toolbarTitle);
     }
 
     @Override
@@ -75,4 +73,12 @@ class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigat
         }
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * レイアウトリソースの設定
+     */
+    void setLayout(int layoutResource) {
+        this.layoutResource = layoutResource;
+    }
+
 }

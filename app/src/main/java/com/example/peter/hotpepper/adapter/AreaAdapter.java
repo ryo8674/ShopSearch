@@ -1,6 +1,7 @@
-package com.example.peter.hotpepper;
+package com.example.peter.hotpepper.adapter;
 
 import android.content.Context;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,25 +10,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.peter.hotpepper.dto.LargeAreaDto;
+
 import java.util.List;
 
 /**
- * 独自アダプター
- *
- * @author :ryo.yamada
- * @since :1.0 :2017/08/25
+ * エリア一覧のリストを表示するAdapter
  */
-class AreaArrayAdapter extends ArrayAdapter<LargeAreaDto> {
+public class AreaAdapter extends ArrayAdapter<LargeAreaDto> {
 
     private final LayoutInflater inflater;
 
-    /**
-     * コンストラクタ
-     *  @param context  context
-     * @param list     list
-     */
-    AreaArrayAdapter(@NonNull Context context, @NonNull List<LargeAreaDto> list) {
-        super(context, android.R.layout.simple_list_item_1, list);
+    public AreaAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<LargeAreaDto> results) {
+        super(context, resource, results);
+
         inflater = LayoutInflater.from(context);
     }
 
@@ -36,6 +32,7 @@ class AreaArrayAdapter extends ArrayAdapter<LargeAreaDto> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
         ViewHolder holder;
+
         if (convertView == null) {
             view = inflater.inflate(android.R.layout.simple_list_item_1, null);
             holder = new ViewHolder();
@@ -45,9 +42,9 @@ class AreaArrayAdapter extends ArrayAdapter<LargeAreaDto> {
             holder = (ViewHolder) view.getTag();
         }
 
-        LargeAreaDto largeAreaDto = getItem(position);
-        if (largeAreaDto != null) {
-            holder.areaName.setText(largeAreaDto.getName());
+        LargeAreaDto largeArea = getItem(position);
+        if (largeArea != null) {
+            holder.areaName.setText(largeArea.getName());
         }
 
         return view;

@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="Red500">#F44336</color>
+    <color name="drawer_red">#C6000E</color>
 </resources>

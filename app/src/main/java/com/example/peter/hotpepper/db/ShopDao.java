@@ -1,35 +1,48 @@
-package com.example.peter.hotpepper;
+package com.example.peter.hotpepper.db;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.peter.hotpepper.dto.ShopDto;
+
 import java.util.ArrayList;
 import java.util.List;
 
-class ShopDao {
+import static com.example.peter.hotpepper.util.Constants.COLUMNS;
+import static com.example.peter.hotpepper.util.Constants.COLUMN_DATE;
+import static com.example.peter.hotpepper.util.Constants.COLUMN_ID;
+import static com.example.peter.hotpepper.util.Constants.SELECTION_ID;
+import static com.example.peter.hotpepper.util.Constants.TABLE_NAME;
 
-    private static final String SELECTION_ID = "shop_id=?";
-    private static final String TABLE_NAME = "bookmark";
-    private static final String COLUMN_ID = "shop_id";
-    private static final String COLUMN_DATE = "date";
-
-    private static final String[] COLUMNS = {COLUMN_ID, COLUMN_DATE};
+/**
+ * ShopDao
+ */
+public class ShopDao {
 
     private final SQLiteDatabase db;
 
-    ShopDao(SQLiteDatabase db) {
+    /**
+     * コンストラクタ
+     */
+    public ShopDao(SQLiteDatabase db) {
         this.db = db;
     }
 
-    void insert(ShopDto shopDto) {
-        ContentValues value = new ContentValues();
-        value.put(COLUMN_ID, shopDto.getId());
-        value.put(COLUMN_DATE, System.currentTimeMillis());
-        db.insert(TABLE_NAME, null, value);
+    /**
+     * insert
+     */
+    public void insert(ShopDto shopDto) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ID, shopDto.getId());
+        values.put(COLUMN_DATE, System.currentTimeMillis());
+        db.insert(TABLE_NAME, null, values);
     }
 
-    List<ShopDto> findAll() {
+    /**
+     * 全件検索
+     */
+    public List<ShopDto> findAll() {
         List<ShopDto> list = new ArrayList<>();
         Cursor cursor = db.query(TABLE_NAME, COLUMNS, null, null, null, null, COLUMN_DATE);
 
@@ -42,7 +55,10 @@ class ShopDao {
         return list;
     }
 
-    ShopDto findById(String id) {
+    /**
+     * ID検索
+     */
+    public ShopDto findById(String id) {
         String[] selectionArgs = {id};
         Cursor cursor = db.query(TABLE_NAME, COLUMNS, SELECTION_ID, selectionArgs, null, null, COLUMN_DATE);
         if (cursor.getCount() == 0) {
@@ -56,7 +72,10 @@ class ShopDao {
         return shop;
     }
 
-    void delete(ShopDto shopDto) {
+    /**
+     * delete
+     */
+    public void delete(ShopDto shopDto) {
         String[] whereArgs = {shopDto.getId()};
         db.delete(TABLE_NAME, SELECTION_ID, whereArgs);
     }

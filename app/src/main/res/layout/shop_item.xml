@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/shop_image"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="@dimen/list_image_size"
+        android:layout_height="@dimen/list_image_size"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -15,19 +15,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/shop_image"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="@dimen/layout_margin_vertical"
+        android:layout_marginLeft="@dimen/layout_margin_horizontal"
+        android:layout_marginRight="@dimen/layout_margin_horizontal"
+        android:layout_marginTop="@dimen/layout_margin_vertical"
         android:layout_toRightOf="@+id/shop_image"
-        android:textSize="20sp" />
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/list_item_title"
+        tools:ignore="RtlHardcoded" />
 
     <TextView
         android:id="@+id/shop_genre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/shop_name"
-        android:layout_alignStart="@+id/shop_name"
         android:layout_below="@+id/shop_name"
-        android:layout_marginBottom="2dp" />
+        tools:ignore="RtlHardcoded" />
 
     <TextView
         android:id="@+id/shop_access"
@@ -36,16 +41,20 @@
         android:layout_alignLeft="@+id/shop_genre"
         android:layout_alignStart="@+id/shop_genre"
         android:layout_below="@+id/shop_genre"
-        android:layout_marginBottom="2dp" />
+        android:layout_marginRight="@dimen/layout_margin_horizontal"
+        android:ellipsize="end"
+        android:maxLines="1"
+        tools:ignore="RtlHardcoded" />
 
     <TextView
         android:id="@+id/shop_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/shop_access"
-        android:layout_alignStart="@+id/shop_access"
         android:layout_below="@+id/shop_access"
         android:background="@color/Red500"
-        android:padding="2dp"
-        android:textColor="@android:color/white" />
+        android:padding="@dimen/list_item_info_padding"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/list_item_info"
+        tools:ignore="RtlHardcoded" />
 </RelativeLayout>
