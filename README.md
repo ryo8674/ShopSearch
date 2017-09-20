@@ -10,12 +10,12 @@
 * NavigationDrawerを使用する
 * Bookmarkは登録順
 
-## 進捗
-* エリア選択 - 済
-* 店舗選択 - 済
-* 店舗詳細 - 未
-  * ボタンの状態を保持する仕様
-  * リストが落ちないように工夫
-* ブックマーク機能 - 済
-* NavigationDrawerの適用 - 済
-  * BaseActivityを作成
+## 拡張
+* Bookmark画面に閲覧履歴を表示
+  * TabLayout + ViewPagerで切り替えができる
+  * Dao -> findByDate 最新20件ぐらい -> ブックマークも最新20件のみ表示に
+  
+### TODO
+>  * Fragmentの処理一部変更
+>  * FragmentPagerAdapterの作成
+>  * ブックマーク画面のレイアウト変更

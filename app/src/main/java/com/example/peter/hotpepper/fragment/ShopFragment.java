@@ -44,6 +44,14 @@ public class ShopFragment extends Fragment implements AdapterView.OnItemClickLis
     public ShopFragment() {
     }
 
+    public static ShopFragment newInstance(int page) {
+        ShopFragment fragment = new ShopFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(BUNDLE_KEY, page);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,6 +62,7 @@ public class ShopFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
+
         ListView shopList = view.findViewById(R.id.shop_list);
         shopList.setOnItemClickListener(this);
 
@@ -68,22 +77,26 @@ public class ShopFragment extends Fragment implements AdapterView.OnItemClickLis
         Bundle bundle = getArguments();
         Map<String, String> param = new HashMap<>();
         if (bundle != null) {
-            param.put(LARGE_AREA, bundle.getString(BUNDLE_KEY));
-        } else {
-            // bookmark DBの読み込み
-            dtoList = shopDao.findAll();
-            StringBuilder builder = new StringBuilder();
-            for (ShopDto shopDto : dtoList) {
-                builder.append(shopDto.getId());
-                if (!shopDto.equals(dtoList.get(dtoList.size() - 1))) {
-                    builder.append(SEPARATE);
-                }
-            }
-            param.put(SHOP_ID, builder.toString());
-        }
+            if (bundle.getString(BUNDLE_KEY) instanceof String) {
+                param.put(LARGE_AREA, bundle.getString(BUNDLE_KEY));
 
-        task = new ShopAsyncTask(view, dtoList);
-        task.execute(UriUtil.createUri(GOURMET, param));
+            } else {
+                // bookmark DBの読み込み
+                dtoList = shopDao.findAll();
+                StringBuilder builder = new StringBuilder();
+                for (ShopDto shopDto : dtoList) {
+                    builder.append(shopDto.getId());
+                    if (!shopDto.equals(dtoList.get(dtoList.size() - 1))) {
+                        builder.append(SEPARATE);
+                    }
+                }
+                param.put(SHOP_ID, builder.toString());
+
+            }
+
+            task = new ShopAsyncTask(view, dtoList);
+            task.execute(UriUtil.createUri(GOURMET, param));
+        }
     }
 
     @Override
@@ -96,3 +109,41 @@ public class ShopFragment extends Fragment implements AdapterView.OnItemClickLis
         startActivity(intent);
     }
 }
+
+/*
+ * @Override
+public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+super.onViewCreated(view, savedInstanceState);
+this.view = view;
+ListView shopList = view.findViewById(R.id.shop_list);
+shopList.setOnItemClickListener(this);
+
+ShopDBHelper helper = new ShopDBHelper(view.getContext());
+shopDao = new ShopDao(helper.getReadableDatabase());
+}
+
+ @Override
+ public void onResume() {
+ super.onResume();
+ List<ShopDto> dtoList = null;
+ Bundle bundle = getArguments();
+ Map<String, String> param = new HashMap<>();
+ if (bundle != null) {
+ param.put(LARGE_AREA, bundle.getString(BUNDLE_KEY));
+ } else {
+ // bookmark DBの読み込み
+ dtoList = shopDao.findAll();
+ StringBuilder builder = new StringBuilder();
+ for (ShopDto shopDto : dtoList) {
+ builder.append(shopDto.getId());
+ if (!shopDto.equals(dtoList.get(dtoList.size() - 1))) {
+ builder.append(SEPARATE);
+ }
+ }
+ param.put(SHOP_ID, builder.toString());
+ }
+
+ task = new ShopAsyncTask(view, dtoList);
+ task.execute(UriUtil.createUri(GOURMET, param));
+ }
+ */

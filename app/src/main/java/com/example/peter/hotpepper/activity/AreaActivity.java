@@ -6,14 +6,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.peter.hotpepper.async.AreaAsyncTask;
 import com.example.peter.hotpepper.R;
+import com.example.peter.hotpepper.async.AreaAsyncTask;
 import com.example.peter.hotpepper.dto.LargeAreaDto;
 import com.example.peter.hotpepper.util.UriUtil;
 
 import static com.example.peter.hotpepper.util.Constants.AREA_ACTIVITY;
-import static com.example.peter.hotpepper.util.Constants.LARGE_AREA;
 import static com.example.peter.hotpepper.util.Constants.AREA_CODE;
+import static com.example.peter.hotpepper.util.Constants.LARGE_AREA;
 
 /**
  * エリア一覧画面のActivity
