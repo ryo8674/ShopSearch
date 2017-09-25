@@ -16,8 +16,12 @@ import static com.example.peter.hotpepper.util.Constants.BUNDLE_KEY;
 public class ShopActivity extends BaseActivity {
 
     @Override
+    int setLayoutResourceId() {
+        return R.layout.activity_shop;
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.setLayout(R.layout.activity_shop);
         super.onCreate(savedInstanceState);
 
         String areaCode = getIntent().getStringExtra(AREA_CODE);

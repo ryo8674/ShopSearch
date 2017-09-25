@@ -1,40 +1,35 @@
 package com.example.peter.hotpepper.async;
 
+import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.ListView;
 
-import com.example.peter.hotpepper.R;
-import com.example.peter.hotpepper.activity.AreaActivity;
-import com.example.peter.hotpepper.adapter.AreaAdapter;
 import com.example.peter.hotpepper.dto.AreaResultApi;
-import com.example.peter.hotpepper.dto.LargeAreaDto;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import static com.example.peter.hotpepper.util.Constants.ERROR_MESSAGE;
 
 /**
  * 大エリアを取得する非同期処理を行うクラス
  */
 public class AreaAsyncTask extends AsyncTask<String, Void, String> {
 
-    private final AreaActivity areaActivity;
-    private List<LargeAreaDto> largeAreaDtoList;
+    private final AreaTaskCallback callback;
 
     /**
      * コンストラクタ
      */
-    public AreaAsyncTask(AreaActivity areaActivity) {
-        this.areaActivity = areaActivity;
+    public AreaAsyncTask(Context context, AreaTaskCallback callback) {
+        super();
+        this.callback = callback;
     }
-
     @Override
     protected String doInBackground(String... uri) {
         String result = null;
@@ -56,27 +51,25 @@ public class AreaAsyncTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
+        if (result.isEmpty()) {
+            callback.onError(ERROR_MESSAGE);
+            return;
+        }
+
         Gson gson = new GsonBuilder().create();
-        largeAreaDtoList = new ArrayList<>();
 
         AreaResultApi resultApi = gson.fromJson(result, new TypeToken<AreaResultApi>() {
         }.getType());
 
-        if (resultApi != null) {
-            largeAreaDtoList = resultApi.getResults().getLargeAreaDto();
-
-            AreaAdapter adapter = new AreaAdapter(areaActivity, android.R.layout.simple_list_item_1, largeAreaDtoList);
-            ListView listView = (ListView) areaActivity.findViewById(R.id.area_list);
-            listView.setAdapter(adapter);
-        }
+        callback.onSuccess(resultApi);
     }
 
     /**
-     * 大エリアのリストを取得
+     * コールバックインタフェース
      */
-    public List<LargeAreaDto> getLargeAreaList() {
-        return largeAreaDtoList;
+    public interface AreaTaskCallback {
+        void onSuccess(AreaResultApi areaResultApi);
+
+        void onError(String message);
     }
-
-
 }

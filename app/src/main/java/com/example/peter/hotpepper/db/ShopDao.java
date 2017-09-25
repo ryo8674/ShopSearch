@@ -1,6 +1,7 @@
 package com.example.peter.hotpepper.db;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -20,19 +21,22 @@ import static com.example.peter.hotpepper.util.Constants.TABLE_NAME;
  */
 public class ShopDao {
 
-    private final SQLiteDatabase db;
+    private SQLiteDatabase db;
+    private final ShopDBHelper helper;
 
     /**
      * コンストラクタ
      */
-    public ShopDao(SQLiteDatabase db) {
-        this.db = db;
+    public ShopDao(Context context) {
+        this.helper = new ShopDBHelper(context);
     }
+
 
     /**
      * insert
      */
     public void insert(ShopDto shopDto) {
+        db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, shopDto.getId());
         values.put(COLUMN_DATE, System.currentTimeMillis());
@@ -43,6 +47,7 @@ public class ShopDao {
      * 全件検索
      */
     public List<ShopDto> findAll() {
+        db = helper.getReadableDatabase();
         List<ShopDto> list = new ArrayList<>();
         Cursor cursor = db.query(TABLE_NAME, COLUMNS, null, null, null, null, COLUMN_DATE);
 
@@ -59,6 +64,7 @@ public class ShopDao {
      * ID検索
      */
     public ShopDto findById(String id) {
+        db = helper.getReadableDatabase();
         String[] selectionArgs = {id};
         Cursor cursor = db.query(TABLE_NAME, COLUMNS, SELECTION_ID, selectionArgs, null, null, COLUMN_DATE);
         if (cursor.getCount() == 0) {
@@ -76,6 +82,7 @@ public class ShopDao {
      * delete
      */
     public void delete(ShopDto shopDto) {
+        db = helper.getWritableDatabase();
         String[] whereArgs = {shopDto.getId()};
         db.delete(TABLE_NAME, SELECTION_ID, whereArgs);
     }

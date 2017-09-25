@@ -17,33 +17,29 @@ import com.example.peter.hotpepper.R;
 /**
  * ベースとなるActivity
  */
-public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+abstract class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
-    private int layoutResource;
+
+    abstract int setLayoutResourceId();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(layoutResource);
+        setContentView(setLayoutResourceId());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
-        if (layoutResource == R.layout.activity_detail) {
-            //noinspection ConstantConditions
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } else {
-            drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
-            //noinspection deprecation
-            drawerLayout.setDrawerListener(toggle);
-            toggle.setDrawerIndicatorEnabled(true);
-            toggle.syncState();
 
-            NavigationView navigation = (NavigationView) findViewById(R.id.nav_view);
-            navigation.setNavigationItemSelectedListener(this);
-        }
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        //noinspection deprecation
+        drawerLayout.setDrawerListener(toggle);
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.syncState();
+
+        NavigationView navigation = (NavigationView) findViewById(R.id.nav_view);
+        navigation.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -63,22 +59,4 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * レイアウトリソースの設定
-     */
-    void setLayout(int layoutResource) {
-        this.layoutResource = layoutResource;
-    }
-
 }

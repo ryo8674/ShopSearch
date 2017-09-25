@@ -86,8 +86,7 @@ public class Constants {
     public static final String REGISTER_BOOKMARK = "ブックマークに追加しました";
     public static final String DELETE_BOOKMARK = "ブックマークから削除しました";
 
-    // 店舗情報の非同期処理時に用いるフラグ
-    public static final int ROOT_VIEW_FLAG = 0;
-    public static final int ACTIVITY_FLAG = 1;
+    //Error Message
+    public static final String ERROR_MESSAGE = "null object";
 
 }
