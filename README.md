@@ -9,13 +9,19 @@
 ## 仕様
 * NavigationDrawerを使用する
 * Bookmarkは登録順
+* おすすめの表示
 
 ## 拡張
-* Bookmark画面に閲覧履歴を表示
-  * TabLayout + ViewPagerで切り替えができる
-  * Dao -> findByDate 最新20件ぐらい -> ブックマークも最新20件のみ表示に
+* メイン画面の作成
+  * CoordinatorLayout + TabLayout + ViewPager
+  * タブ
+    * Recommend
+    * Favorite(Bookmark)
+    * History
+* 履歴一覧画面の作成
+  * 履歴
+    * 詳細画面にアクセスしたタイミング
+    * Preferenceに登録
+      * JSONを登録すればいい？
+    * 最新20件表示
   
-### TODO
->  * Fragmentの処理一部変更
->  * FragmentPagerAdapterの作成
->  * ブックマーク画面のレイアウト変更

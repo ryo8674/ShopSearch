@@ -53,6 +53,11 @@ abstract class BaseActivity extends AppCompatActivity implements NavigationView.
             case R.id.nav_bookmark:
                 intent = new Intent(this, BookmarkActivity.class);
                 break;
+            case R.id.nav_history:
+                intent = new Intent(this, HistoryActivity.class);
+                break;
+            default:
+                break;
         }
 
         startActivity(intent);

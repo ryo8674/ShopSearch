@@ -32,6 +32,9 @@ public class Constants {
     public static final String SHOP_ID = "id";
     public static final String SHOP_CODE = "shop_code";
     public static final String GOURMET = "gourmet";
+    public static final String SPECIAL_CATEGORY = "special_category";
+    public static final String SPECIAL_CATEGORY_VALUE= "SPG6";
+
 
     // DTO
     public static final String PRIVATE_ROOM = "個室";
@@ -77,6 +80,7 @@ public class Constants {
     public static final String AREA_ACTIVITY = "エリア一覧";
     public static final String SHOP_ACTIVITY = "の店舗一覧";
     public static final String BOOKMARK_ACTIVITY = "ブックマーク一覧";
+    public static final String HISTORY_ACTIVITY = "履歴一覧";
 
     // Buttonのテキスト
     public static final String REGISTER_BUTTON = "このお店をブックマーク";
