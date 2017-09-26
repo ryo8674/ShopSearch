@@ -7,12 +7,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.example.peter.hotpepper.fragment.RecommendFragment;
 import com.example.peter.hotpepper.fragment.ShopFragment;
 
+import static com.example.peter.hotpepper.util.Constants.FAVORITE_PAGE;
+import static com.example.peter.hotpepper.util.Constants.HISTORY_PAGE;
+import static com.example.peter.hotpepper.util.Constants.RECOMMEND_PAGE;
+import static com.example.peter.hotpepper.util.Constants.TAB_NAME;
+
 
 public class ShopPagerAdapter extends FragmentPagerAdapter {
-    private static final int RECOMMEND_PAGE = 0;
-    private static final int FAVORITE_PAGE = 1;
-    private static final int HISTORY_PAGE = 2;
-    private static final String[] TAB_NAME = {"おすすめ", "お気に入り", "履歴"};
 
     public ShopPagerAdapter(FragmentManager fm) {
         super(fm);

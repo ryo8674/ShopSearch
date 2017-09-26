@@ -11,6 +11,8 @@ import com.example.peter.hotpepper.R;
 import com.example.peter.hotpepper.adapter.ShopPagerAdapter;
 
 public class MainActivity extends BaseActivity {
+    private static final int[] ICONS = {R.drawable.tab_recommend_selector, R.drawable.tab_favorite_selector, R.drawable.tab_history_selector};
+
     @Override
     int setLayoutResourceId() {
         return R.layout.activity_main;
@@ -24,15 +26,8 @@ public class MainActivity extends BaseActivity {
         collapsingToolbarLayout.setTitleEnabled(false);
         super.setTitle(getResources().getString(R.string.app_name));
 
-//        toolbar.setTitle("aaa");
-
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 1").setIcon(R.drawable.tab_recommend_selector));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 2").setIcon(R.drawable.tab_favorite_selector));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 3").setIcon(R.drawable.tab_history_selector));
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         ShopPagerAdapter adapter = new ShopPagerAdapter(fragmentManager);
@@ -40,5 +35,10 @@ public class MainActivity extends BaseActivity {
         viewPager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(viewPager);
+        // tabにセレクタを設定
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            tabLayout.getTabAt(i).setIcon(ICONS[i]);
+        }
+
     }
 }

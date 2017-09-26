@@ -29,6 +29,7 @@ import java.util.Map;
 import static com.example.peter.hotpepper.util.Constants.DELETE_BOOKMARK;
 import static com.example.peter.hotpepper.util.Constants.DELETE_BUTTON;
 import static com.example.peter.hotpepper.util.Constants.GOURMET;
+import static com.example.peter.hotpepper.util.Constants.PREFERENCE_NAME;
 import static com.example.peter.hotpepper.util.Constants.REGISTER_BOOKMARK;
 import static com.example.peter.hotpepper.util.Constants.REGISTER_BUTTON;
 import static com.example.peter.hotpepper.util.Constants.SHOP_CODE;
@@ -123,6 +124,9 @@ public class ShopDetailActivity extends AppCompatActivity implements ShopAsyncTa
     public void onError(String message) {
     }
 
+    /**
+     * JSONをオブジェクトに変換
+     */
     private void createObject(String result) {
         Gson gson = new GsonBuilder().create();
 
@@ -130,8 +134,13 @@ public class ShopDetailActivity extends AppCompatActivity implements ShopAsyncTa
         }.getType());
     }
 
+    /**
+     * JSONをPreferenceに登録
+     * <br> key: ???
+     * <br> value: Json
+     */
     private void registerPreference(String result) {
-        SharedPreferences sharedPreferences = getSharedPreferences("file", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("", result);
         editor.apply();
