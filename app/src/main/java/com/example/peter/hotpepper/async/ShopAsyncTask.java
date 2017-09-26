@@ -1,17 +1,10 @@
 package com.example.peter.hotpepper.async;
 
-import android.app.Activity;
 import android.os.AsyncTask;
-import android.view.View;
 
 import com.example.peter.hotpepper.dto.ShopDto;
-import com.example.peter.hotpepper.dto.ShopResultApi;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -25,24 +18,13 @@ import static com.example.peter.hotpepper.util.Constants.ERROR_MESSAGE;
  */
 public class ShopAsyncTask extends AsyncTask<String, Void, String> {
 
-    private View rootView;
     private List<ShopDto> shopDtoList;
-    private Activity activity;
     private final ShopTaskCallback callback;
 
     /**
      * コンストラクタ
      */
-    public ShopAsyncTask(View view, ShopTaskCallback callback) {
-        rootView = view;
-        this.callback = callback;
-    }
-
-    /**
-     * ブックマーク画面用コンストラクタ
-     */
-    public ShopAsyncTask(Activity activity, ShopTaskCallback callback) {
-        this.activity = activity;
+    public ShopAsyncTask(ShopTaskCallback callback) {
         this.callback = callback;
     }
 
@@ -72,20 +54,14 @@ public class ShopAsyncTask extends AsyncTask<String, Void, String> {
             return;
         }
 
-        Gson gson = new GsonBuilder().create();
-        shopDtoList = new ArrayList<>();
-
-        ShopResultApi resultApi = gson.fromJson(result, new TypeToken<ShopResultApi>() {
-        }.getType());
-
-        callback.onSuccess(resultApi);
+        callback.onSuccess(result);
     }
 
     /**
      * コールバックインタフェース
      */
     public interface ShopTaskCallback {
-        void onSuccess(ShopResultApi shopResultApi);
+        void onSuccess(String result);
 
         void onError(String message);
     }

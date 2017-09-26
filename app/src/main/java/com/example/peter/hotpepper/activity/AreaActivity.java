@@ -41,7 +41,7 @@ public class AreaActivity extends BaseActivity implements AdapterView.OnItemClic
         areaList.setOnItemClickListener(this);
 
         // 非同期処理
-        AreaAsyncTask task = new AreaAsyncTask(this,this);
+        AreaAsyncTask task = new AreaAsyncTask(this);
         task.execute(UriUtil.createUri(LARGE_AREA));
     }
 

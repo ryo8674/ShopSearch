@@ -1,6 +1,5 @@
 package com.example.peter.hotpepper.async;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.example.peter.hotpepper.dto.AreaResultApi;
@@ -26,8 +25,7 @@ public class AreaAsyncTask extends AsyncTask<String, Void, String> {
     /**
      * コンストラクタ
      */
-    public AreaAsyncTask(Context context, AreaTaskCallback callback) {
-        super();
+    public AreaAsyncTask(AreaTaskCallback callback) {
         this.callback = callback;
     }
     @Override

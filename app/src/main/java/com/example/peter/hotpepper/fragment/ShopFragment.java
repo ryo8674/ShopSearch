@@ -19,6 +19,9 @@ import com.example.peter.hotpepper.db.ShopDao;
 import com.example.peter.hotpepper.dto.ShopDto;
 import com.example.peter.hotpepper.dto.ShopResultApi;
 import com.example.peter.hotpepper.util.UriUtil;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +46,7 @@ public class ShopFragment extends Fragment implements AdapterView.OnItemClickLis
     private ListView shopList;
     private List<ShopDto> shopDtoList;
     private List<ShopDto> idList;
+    private ShopResultApi shopResultApi;
 
     /**
      * コンストラクタ
@@ -87,7 +91,7 @@ public class ShopFragment extends Fragment implements AdapterView.OnItemClickLis
             param.put(SHOP_ID, builder.toString());
         }
 
-        ShopAsyncTask task = new ShopAsyncTask(view, this);
+        ShopAsyncTask task = new ShopAsyncTask(this);
         task.execute(UriUtil.createUri(GOURMET, param));
     }
 
@@ -101,7 +105,9 @@ public class ShopFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     @Override
-    public void onSuccess(ShopResultApi shopResultApi) {
+    public void onSuccess(String result) {
+
+        createObject(result);
         shopDtoList = shopResultApi.getResults().getShop();
 
         if (idList != null) {
@@ -132,5 +138,12 @@ public class ShopFragment extends Fragment implements AdapterView.OnItemClickLis
             }
         }
         return result;
+    }
+
+    private void createObject(String result){
+        Gson gson = new GsonBuilder().create();
+
+        shopResultApi = gson.fromJson(result, new TypeToken<ShopResultApi>() {
+        }.getType());
     }
 }

@@ -1,5 +1,6 @@
 package com.example.peter.hotpepper.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,9 @@ import com.example.peter.hotpepper.db.ShopDao;
 import com.example.peter.hotpepper.dto.ShopDto;
 import com.example.peter.hotpepper.dto.ShopResultApi;
 import com.example.peter.hotpepper.util.UriUtil;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,12 +38,13 @@ import static com.example.peter.hotpepper.util.Constants.SHOP_ID;
 /**
  * 店舗詳細画面のActivity
  */
-public class ShopDetailActivity extends AppCompatActivity implements ShopAsyncTask.ShopTaskCallback{
+public class ShopDetailActivity extends AppCompatActivity implements ShopAsyncTask.ShopTaskCallback {
 
     private ShopDao shopDao;
     public static boolean flag;
     private Toolbar toolbar;
     private List<ShopDto> shopDtoList;
+    private ShopResultApi shopResultApi;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +64,7 @@ public class ShopDetailActivity extends AppCompatActivity implements ShopAsyncTa
                 param.put(SHOP_ID, shopId);
                 flag = isButtonPressed(shopId);
 
-                ShopAsyncTask task = new ShopAsyncTask(ShopDetailActivity.this, this);
+                ShopAsyncTask task = new ShopAsyncTask(this);
                 task.execute(UriUtil.createUri(GOURMET, param));
             }
         }
@@ -105,7 +110,8 @@ public class ShopDetailActivity extends AppCompatActivity implements ShopAsyncTa
     }
 
     @Override
-    public void onSuccess(ShopResultApi shopResultApi) {
+    public void onSuccess(String result) {
+        createObject(result);
         shopDtoList = shopResultApi.getResults().getShop();
         ShopDetailAdapter adapter = new ShopDetailAdapter(this, shopDtoList.get(0));
         ListView listView = (ListView) findViewById(R.id.shop_detail_list);
@@ -117,4 +123,17 @@ public class ShopDetailActivity extends AppCompatActivity implements ShopAsyncTa
     public void onError(String message) {
     }
 
+    private void createObject(String result) {
+        Gson gson = new GsonBuilder().create();
+
+        shopResultApi = gson.fromJson(result, new TypeToken<ShopResultApi>() {
+        }.getType());
+    }
+
+    private void registerPreference(String result) {
+        SharedPreferences sharedPreferences = getSharedPreferences("file", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("", result);
+        editor.apply();
+    }
 }

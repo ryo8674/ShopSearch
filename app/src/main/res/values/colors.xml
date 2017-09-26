@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="Red500">#F44336</color>
     <color name="drawer_red">#C6000E</color>
+    <color name="Amber">#FFC107</color>
+    <color name="PersianRed">#D32F2F</color>
 </resources>

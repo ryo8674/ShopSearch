@@ -17,12 +17,16 @@ import com.example.peter.hotpepper.async.ShopAsyncTask;
 import com.example.peter.hotpepper.dto.ShopDto;
 import com.example.peter.hotpepper.dto.ShopResultApi;
 import com.example.peter.hotpepper.util.UriUtil;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.example.peter.hotpepper.util.Constants.GOURMET;
+import static com.example.peter.hotpepper.util.Constants.LARGE_AREA;
 import static com.example.peter.hotpepper.util.Constants.SHOP_CODE;
 import static com.example.peter.hotpepper.util.Constants.SPECIAL_CATEGORY;
 import static com.example.peter.hotpepper.util.Constants.SPECIAL_CATEGORY_VALUE;
@@ -35,6 +39,7 @@ public class RecommendFragment extends Fragment implements AdapterView.OnItemCli
     private View view;
     private ListView shopList;
     private List<ShopDto> shopDtoList;
+    private ShopResultApi shopResultApi;
 
     /**
      * コンストラクタ
@@ -63,8 +68,9 @@ public class RecommendFragment extends Fragment implements AdapterView.OnItemCli
         // paramの作成
         Map<String, String> param = new HashMap<>();
         param.put(SPECIAL_CATEGORY, SPECIAL_CATEGORY_VALUE);
+        param.put(LARGE_AREA, "Z011");
 
-        ShopAsyncTask task = new ShopAsyncTask(view, this);
+        ShopAsyncTask task = new ShopAsyncTask(this);
         task.execute(UriUtil.createUri(GOURMET, param));
     }
 
@@ -78,7 +84,8 @@ public class RecommendFragment extends Fragment implements AdapterView.OnItemCli
     }
 
     @Override
-    public void onSuccess(ShopResultApi shopResultApi) {
+    public void onSuccess(String result) {
+        createObject(result);
         shopDtoList = shopResultApi.getResults().getShop();
         ShopAdapter adapter = new ShopAdapter(getContext(), shopDtoList);
         shopList.setAdapter(adapter);
@@ -86,5 +93,12 @@ public class RecommendFragment extends Fragment implements AdapterView.OnItemCli
 
     @Override
     public void onError(String message) {
+    }
+
+    private void createObject(String result){
+        Gson gson = new GsonBuilder().create();
+
+        shopResultApi = gson.fromJson(result, new TypeToken<ShopResultApi>() {
+        }.getType());
     }
 }
