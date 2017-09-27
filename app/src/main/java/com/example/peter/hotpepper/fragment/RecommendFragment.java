@@ -13,7 +13,7 @@ import android.widget.ListView;
 import com.example.peter.hotpepper.R;
 import com.example.peter.hotpepper.activity.ShopDetailActivity;
 import com.example.peter.hotpepper.adapter.ShopAdapter;
-import com.example.peter.hotpepper.async.ShopAsyncTask;
+import com.example.peter.hotpepper.async.Task;
 import com.example.peter.hotpepper.dto.ShopDto;
 import com.example.peter.hotpepper.dto.ShopResultApi;
 import com.example.peter.hotpepper.util.UriUtil;
@@ -27,19 +27,18 @@ import java.util.Map;
 
 import static com.example.peter.hotpepper.util.Constants.GOURMET;
 import static com.example.peter.hotpepper.util.Constants.LARGE_AREA;
+import static com.example.peter.hotpepper.util.Constants.LARGE_AREA_DEFAULT;
+import static com.example.peter.hotpepper.util.Constants.ORDER;
+import static com.example.peter.hotpepper.util.Constants.ORDER_VALUE;
 import static com.example.peter.hotpepper.util.Constants.SHOP_CODE;
-import static com.example.peter.hotpepper.util.Constants.SPECIAL_CATEGORY;
-import static com.example.peter.hotpepper.util.Constants.SPECIAL_CATEGORY_VALUE;
 
 /**
  * おすすめ一覧を表示する Fragment
  */
-public class RecommendFragment extends Fragment implements AdapterView.OnItemClickListener, ShopAsyncTask.ShopTaskCallback {
+public class RecommendFragment extends Fragment implements AdapterView.OnItemClickListener, Task.ShopTaskCallback {
 
-    private View view;
     private ListView shopList;
     private List<ShopDto> shopDtoList;
-    private ShopResultApi shopResultApi;
 
     /**
      * コンストラクタ
@@ -56,7 +55,6 @@ public class RecommendFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.view = view;
         shopList = view.findViewById(R.id.shop_list);
         shopList.setOnItemClickListener(this);
     }
@@ -67,10 +65,10 @@ public class RecommendFragment extends Fragment implements AdapterView.OnItemCli
 
         // paramの作成
         Map<String, String> param = new HashMap<>();
-        param.put(SPECIAL_CATEGORY, SPECIAL_CATEGORY_VALUE);
-        param.put(LARGE_AREA, "Z011");
+        param.put(ORDER, ORDER_VALUE);
+        param.put(LARGE_AREA, LARGE_AREA_DEFAULT);
 
-        ShopAsyncTask task = new ShopAsyncTask(this);
+        Task task = new Task(this);
         task.execute(UriUtil.createUri(GOURMET, param));
     }
 
@@ -86,7 +84,6 @@ public class RecommendFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public void onSuccess(String result) {
         createObject(result);
-        shopDtoList = shopResultApi.getResults().getShop();
         ShopAdapter adapter = new ShopAdapter(getContext(), shopDtoList);
         shopList.setAdapter(adapter);
     }
@@ -95,10 +92,15 @@ public class RecommendFragment extends Fragment implements AdapterView.OnItemCli
     public void onError(String message) {
     }
 
+    /**
+     * JsonをShopDtoのリストに変換
+     * @param result Json
+     */
     private void createObject(String result){
         Gson gson = new GsonBuilder().create();
 
-        shopResultApi = gson.fromJson(result, new TypeToken<ShopResultApi>() {
+        ShopResultApi shopResultApi = gson.fromJson(result, new TypeToken<ShopResultApi>() {
         }.getType());
+        shopDtoList = shopResultApi.getResults().getShop();
     }
 }

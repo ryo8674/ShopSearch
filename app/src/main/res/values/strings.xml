@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">GourmetApp</string>
     <string name="nav_area">エリアから探す</string>
-    <string name="drawer_header">Habanero</string>
     <string name="nav_bookmark">お気に入り</string>
     <string name="nav_history">閲覧履歴</string>
 </resources>

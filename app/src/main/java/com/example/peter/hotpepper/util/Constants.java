@@ -32,8 +32,9 @@ public class Constants {
     public static final String SHOP_ID = "id";
     public static final String SHOP_CODE = "shop_code";
     public static final String GOURMET = "gourmet";
-    public static final String SPECIAL_CATEGORY = "special_category";
-    public static final String SPECIAL_CATEGORY_VALUE = "SPG6";
+    public static final String ORDER = "order";
+    public static final String ORDER_VALUE = "4";
+    public static final String LARGE_AREA_DEFAULT = "Z011";
 
     // DTO
     public static final String PRIVATE_ROOM = "個室";
@@ -103,5 +104,7 @@ public class Constants {
 
     //Preference
     public static final String PREFERENCE_NAME = "preference_name";
+    public static final int PREFERENCE_MAX_SIZE = 20;
+
 
 }

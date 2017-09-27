@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.example.peter.hotpepper.fragment.HistoryFragment;
 import com.example.peter.hotpepper.fragment.RecommendFragment;
 import com.example.peter.hotpepper.fragment.ShopFragment;
 
@@ -30,7 +31,7 @@ public class ShopPagerAdapter extends FragmentPagerAdapter {
                 fragment = new ShopFragment();
                 break;
             case HISTORY_PAGE:
-                fragment = new ShopFragment();
+                fragment = new HistoryFragment();
                 break;
             default:
                 break;

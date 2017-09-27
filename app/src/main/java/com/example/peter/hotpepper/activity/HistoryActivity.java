@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 
 import com.example.peter.hotpepper.R;
-import com.example.peter.hotpepper.fragment.ShopFragment;
+import com.example.peter.hotpepper.fragment.HistoryFragment;
 
 import static com.example.peter.hotpepper.util.Constants.HISTORY_ACTIVITY;
 
@@ -24,10 +24,9 @@ public class HistoryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         super.setTitle(HISTORY_ACTIVITY);
 
-        // TODO: HistoryFragmentに変更
-        ShopFragment shopFragment = new ShopFragment();
+        HistoryFragment historyFragment = new HistoryFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, shopFragment);
+        transaction.replace(R.id.container, historyFragment);
         transaction.commit();
     }
 }

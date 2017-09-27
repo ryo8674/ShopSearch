@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,30 +14,28 @@ import android.widget.ListView;
 import com.example.peter.hotpepper.R;
 import com.example.peter.hotpepper.activity.ShopDetailActivity;
 import com.example.peter.hotpepper.adapter.ShopAdapter;
-import com.example.peter.hotpepper.async.ShopAsyncTask;
-import com.example.peter.hotpepper.db.ShopDao;
 import com.example.peter.hotpepper.dto.ShopDto;
-import com.example.peter.hotpepper.dto.ShopResultApi;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.peter.hotpepper.util.Constants.PREFERENCE_MAX_SIZE;
+import static com.example.peter.hotpepper.util.Constants.PREFERENCE_NAME;
 import static com.example.peter.hotpepper.util.Constants.SHOP_CODE;
 
 /**
  * 履歴一覧を表示する Fragment
  */
-public class HistoryFragment extends Fragment implements AdapterView.OnItemClickListener, ShopAsyncTask.ShopTaskCallback {
+public class HistoryFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private View view;
     private ListView shopList;
-    private ShopDao shopDao;
     private List<ShopDto> shopDtoList;
-    private ShopResultApi shopResultApi;
+    private Gson gson;
 
     /**
      * コンストラクタ
@@ -55,7 +52,6 @@ public class HistoryFragment extends Fragment implements AdapterView.OnItemClick
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.view = view;
         shopList = view.findViewById(R.id.shop_list);
         shopList.setOnItemClickListener(this);
     }
@@ -64,11 +60,11 @@ public class HistoryFragment extends Fragment implements AdapterView.OnItemClick
     public void onResume() {
         super.onResume();
 
-        // TODO:履歴のプリファレンスの読み込み
-        // paramの作成
+        gson = new Gson();
+        shopDtoList = readAllPreferences();
 
-//        ShopAsyncTask task = new ShopAsyncTask(view,this);
-//        task.execute();
+        ShopAdapter adapter = new ShopAdapter(getContext(), shopDtoList);
+        shopList.setAdapter(adapter);
     }
 
     @Override
@@ -80,50 +76,47 @@ public class HistoryFragment extends Fragment implements AdapterView.OnItemClick
         startActivity(intent);
     }
 
-    @Override
-    public void onSuccess(String result) {
+    /**
+     * プリファレンスの全件読み込み
+     * 件数が20件より多い場合、20件以降を削除する
+     */
+    private List<ShopDto> readAllPreferences() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        List<ShopDto> list = new ArrayList<>();
+        Map<String, ?> map = sharedPreferences.getAll();
+        for (String key : map.keySet()) {
+            ShopDto value = gson.fromJson(sharedPreferences.getString(key, null), ShopDto.class);
+            list.add(value);
+        }
 
-        createObject(result);
-        shopDtoList = shopResultApi.getResults().getShop();
-//        shopDtoList = sortList(shopDtoList,);
-        ShopAdapter adapter = new ShopAdapter(getContext(), shopDtoList);
-        shopList.setAdapter(adapter);
-    }
+        sortDate(list);
 
-    @Override
-    public void onError(String message) {
+        // 20件より多い場合、削除
+        while (list.size() > PREFERENCE_MAX_SIZE) {
+            list.remove(list.size() - 1);
+            editor.remove(list.get(list.size() - 1).getId());
+        }
+        editor.apply();
+
+        return list;
     }
 
     /**
-     * リストを登録時間順にソート
+     * リストを閲覧時間の最新順にソート
      */
-    private List<ShopDto> sortList(List<ShopDto> targetList, List<ShopDto> idList) {
-        List<ShopDto> result = new ArrayList<>();
-        for (ShopDto id : idList) {
-            for (ShopDto target : targetList) {
-                if (target.getId().equals(id.getId())) {
-                    result.add(target);
-                }
+    private void sortDate(List<ShopDto> list) {
+        Collections.sort(list, new Comparator<ShopDto>() {
+            @Override
+            public int compare(ShopDto shopDto1, ShopDto shopDto2) {
+                if (shopDto1.getDate() == null || shopDto2.getDate() == null)
+                    return 0;
+                if (shopDto1.getDate().getTime() > shopDto2.getDate().getTime())
+                    return -1;
+                if (shopDto1.getDate().getTime() < shopDto2.getDate().getTime())
+                    return 1;
+                return shopDto1.getDate().compareTo(shopDto2.getDate());
             }
-        }
-        return result;
-    }
-
-    private void createObject(String result) {
-        Gson gson = new GsonBuilder().create();
-
-        shopResultApi = gson.fromJson(result, new TypeToken<ShopResultApi>() {
-        }.getType());
-    }
-
-    private void readAllPreferences(SharedPreferences preferences) {
-        Map<String, ?> map = preferences.getAll();
-        for (Map.Entry<String, ?> entry : map.entrySet()) {
-            String key = entry.getKey();
-
-            Object value = entry.getValue();
-            String msg = String.format("%s=%s", key, value);
-            Log.v("LogSample", msg);
-        }
+        });
     }
 }

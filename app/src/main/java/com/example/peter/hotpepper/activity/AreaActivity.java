@@ -8,10 +8,13 @@ import android.widget.ListView;
 
 import com.example.peter.hotpepper.R;
 import com.example.peter.hotpepper.adapter.AreaAdapter;
-import com.example.peter.hotpepper.async.AreaAsyncTask;
+import com.example.peter.hotpepper.async.Task;
 import com.example.peter.hotpepper.dto.AreaResultApi;
 import com.example.peter.hotpepper.dto.LargeAreaDto;
 import com.example.peter.hotpepper.util.UriUtil;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
@@ -22,7 +25,7 @@ import static com.example.peter.hotpepper.util.Constants.LARGE_AREA;
 /**
  * エリア一覧画面のActivity
  */
-public class AreaActivity extends BaseActivity implements AdapterView.OnItemClickListener,AreaAsyncTask.AreaTaskCallback {
+public class AreaActivity extends BaseActivity implements AdapterView.OnItemClickListener,Task.ShopTaskCallback {
 
     private ListView areaList;
     private List<LargeAreaDto> largeAreaDtoList;
@@ -41,7 +44,7 @@ public class AreaActivity extends BaseActivity implements AdapterView.OnItemClic
         areaList.setOnItemClickListener(this);
 
         // 非同期処理
-        AreaAsyncTask task = new AreaAsyncTask(this);
+        Task task = new Task(this);
         task.execute(UriUtil.createUri(LARGE_AREA));
     }
 
@@ -55,13 +58,24 @@ public class AreaActivity extends BaseActivity implements AdapterView.OnItemClic
     }
 
     @Override
-    public void onSuccess(AreaResultApi areaResultApi) {
-        largeAreaDtoList = areaResultApi.getResults().getLargeAreaDto();
+    public void onSuccess(String result) {
+        createObject(result);
         AreaAdapter adapter = new AreaAdapter(this, android.R.layout.simple_list_item_1, largeAreaDtoList);
         areaList.setAdapter(adapter);
     }
 
     @Override
     public void onError(String message) {
+    }
+
+    /**
+     * JSONをオブジェクトに変換
+     */
+    private void createObject(String result) {
+        Gson gson = new GsonBuilder().create();
+
+        AreaResultApi resultApi = gson.fromJson(result, new TypeToken<AreaResultApi>() {
+        }.getType());
+        largeAreaDtoList = resultApi.getResults().getLargeAreaDto();
     }
 }

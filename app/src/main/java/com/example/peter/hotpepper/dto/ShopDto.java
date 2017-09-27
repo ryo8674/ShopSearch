@@ -2,6 +2,7 @@ package com.example.peter.hotpepper.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -55,6 +56,7 @@ public class ShopDto {
     private PhotoDto photo;
     private String tatami;
     private String horigotatsu;
+    private Date date;
 
     private StringBuilder message;
 
@@ -175,6 +177,16 @@ public class ShopDto {
      */
     private String getHorigotatsu() {
         return horigotatsu;
+    }
+
+    /** 閲覧時間を取得 */
+    public Date getDate() {
+        return date;
+    }
+
+    /** 閲覧時間をセット */
+    public void setDate(Date date){
+        this.date = date;
     }
 
     /**

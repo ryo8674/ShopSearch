@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.example.peter.hotpepper.R;
 import com.example.peter.hotpepper.adapter.ShopDetailAdapter;
-import com.example.peter.hotpepper.async.ShopAsyncTask;
+import com.example.peter.hotpepper.async.Task;
 import com.example.peter.hotpepper.db.ShopDao;
 import com.example.peter.hotpepper.dto.ShopDto;
 import com.example.peter.hotpepper.dto.ShopResultApi;
@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,13 +40,14 @@ import static com.example.peter.hotpepper.util.Constants.SHOP_ID;
 /**
  * 店舗詳細画面のActivity
  */
-public class ShopDetailActivity extends AppCompatActivity implements ShopAsyncTask.ShopTaskCallback {
+public class ShopDetailActivity extends AppCompatActivity implements Task.ShopTaskCallback {
 
     private ShopDao shopDao;
     public static boolean flag;
     private Toolbar toolbar;
     private List<ShopDto> shopDtoList;
-    private ShopResultApi shopResultApi;
+    private String shopId;
+    private Gson gson;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,13 +61,13 @@ public class ShopDetailActivity extends AppCompatActivity implements ShopAsyncTa
 
         // 非同期に渡す値の設定
         if (getIntent() != null) {
-            String shopId = getIntent().getStringExtra(SHOP_CODE);
+            shopId = getIntent().getStringExtra(SHOP_CODE);
             if (shopId != null) {
                 Map<String, String> param = new HashMap<>();
                 param.put(SHOP_ID, shopId);
                 flag = isButtonPressed(shopId);
 
-                ShopAsyncTask task = new ShopAsyncTask(this);
+                Task task = new Task(this);
                 task.execute(UriUtil.createUri(GOURMET, param));
             }
         }
@@ -112,8 +114,8 @@ public class ShopDetailActivity extends AppCompatActivity implements ShopAsyncTa
 
     @Override
     public void onSuccess(String result) {
-        createObject(result);
-        shopDtoList = shopResultApi.getResults().getShop();
+        registerPreference(result);
+
         ShopDetailAdapter adapter = new ShopDetailAdapter(this, shopDtoList.get(0));
         ListView listView = (ListView) findViewById(R.id.shop_detail_list);
         listView.setAdapter(adapter);
@@ -128,21 +130,35 @@ public class ShopDetailActivity extends AppCompatActivity implements ShopAsyncTa
      * JSONをオブジェクトに変換
      */
     private void createObject(String result) {
-        Gson gson = new GsonBuilder().create();
+        gson = new GsonBuilder().create();
 
-        shopResultApi = gson.fromJson(result, new TypeToken<ShopResultApi>() {
+        ShopResultApi shopResultApi = gson.fromJson(result, new TypeToken<ShopResultApi>() {
         }.getType());
+        shopDtoList = shopResultApi.getResults().getShop();
     }
 
     /**
      * JSONをPreferenceに登録
-     * <br> key: ???
+     * <br> key: shopId
      * <br> value: Json
      */
     private void registerPreference(String result) {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("", result);
+        createObject(result);
+
+        for (String id:sharedPreferences.getAll().keySet()){
+            if(id.equals(shopId)){
+                editor.remove(shopId);
+            }
+        }
+
+        for (ShopDto shopDto: shopDtoList){
+            shopDto.setDate(new Date());
+            editor.putString(shopId,gson.toJson(shopDto));
+        }
+
         editor.apply();
+        Toast.makeText(this, "aaa", Toast.LENGTH_SHORT).show();
     }
 }

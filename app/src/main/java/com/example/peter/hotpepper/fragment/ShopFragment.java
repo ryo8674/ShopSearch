@@ -14,7 +14,7 @@ import android.widget.ListView;
 import com.example.peter.hotpepper.R;
 import com.example.peter.hotpepper.activity.ShopDetailActivity;
 import com.example.peter.hotpepper.adapter.ShopAdapter;
-import com.example.peter.hotpepper.async.ShopAsyncTask;
+import com.example.peter.hotpepper.async.Task;
 import com.example.peter.hotpepper.db.ShopDao;
 import com.example.peter.hotpepper.dto.ShopDto;
 import com.example.peter.hotpepper.dto.ShopResultApi;
@@ -39,14 +39,13 @@ import static com.example.peter.hotpepper.util.Constants.SHOP_ID;
 /**
  * 店舗一覧を表示するFragment
  */
-public class ShopFragment extends Fragment implements AdapterView.OnItemClickListener,ShopAsyncTask.ShopTaskCallback {
+public class ShopFragment extends Fragment implements AdapterView.OnItemClickListener,Task.ShopTaskCallback {
 
     private View view;
     private ShopDao shopDao;
     private ListView shopList;
     private List<ShopDto> shopDtoList;
     private List<ShopDto> idList;
-    private ShopResultApi shopResultApi;
 
     /**
      * コンストラクタ
@@ -91,7 +90,7 @@ public class ShopFragment extends Fragment implements AdapterView.OnItemClickLis
             param.put(SHOP_ID, builder.toString());
         }
 
-        ShopAsyncTask task = new ShopAsyncTask(this);
+        Task task = new Task(this);
         task.execute(UriUtil.createUri(GOURMET, param));
     }
 
@@ -108,7 +107,6 @@ public class ShopFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onSuccess(String result) {
 
         createObject(result);
-        shopDtoList = shopResultApi.getResults().getShop();
 
         if (idList != null) {
             shopDtoList = sortList(shopDtoList, idList);
@@ -140,10 +138,15 @@ public class ShopFragment extends Fragment implements AdapterView.OnItemClickLis
         return result;
     }
 
+    /**
+     * JsonをShopDtoのリストに変換
+     * @param result Json
+     */
     private void createObject(String result){
         Gson gson = new GsonBuilder().create();
 
-        shopResultApi = gson.fromJson(result, new TypeToken<ShopResultApi>() {
+        ShopResultApi shopResultApi = gson.fromJson(result, new TypeToken<ShopResultApi>() {
         }.getType());
+        shopDtoList = shopResultApi.getResults().getShop();
     }
 }

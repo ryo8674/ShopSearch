@@ -2,10 +2,7 @@ package com.example.peter.hotpepper.async;
 
 import android.os.AsyncTask;
 
-import com.example.peter.hotpepper.dto.ShopDto;
-
 import java.io.IOException;
-import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -14,17 +11,17 @@ import okhttp3.Response;
 import static com.example.peter.hotpepper.util.Constants.ERROR_MESSAGE;
 
 /**
- * 店舗情報を取得する非同期処理を行うクラス
+ * 非同期処理を行うクラス
+ * 通信成功：Jsonを返す
  */
-public class ShopAsyncTask extends AsyncTask<String, Void, String> {
+public class Task extends AsyncTask<String, Void, String> {
 
-    private List<ShopDto> shopDtoList;
     private final ShopTaskCallback callback;
 
     /**
      * コンストラクタ
      */
-    public ShopAsyncTask(ShopTaskCallback callback) {
+    public Task(ShopTaskCallback callback) {
         this.callback = callback;
     }
 
