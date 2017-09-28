@@ -13,6 +13,7 @@ import java.util.List;
 import static com.example.peter.hotpepper.util.Constants.COLUMNS;
 import static com.example.peter.hotpepper.util.Constants.COLUMN_DATE;
 import static com.example.peter.hotpepper.util.Constants.COLUMN_ID;
+import static com.example.peter.hotpepper.util.Constants.ORDER_DATE_DESC;
 import static com.example.peter.hotpepper.util.Constants.SELECTION_ID;
 import static com.example.peter.hotpepper.util.Constants.TABLE_NAME;
 
@@ -49,7 +50,7 @@ public class ShopDao {
     public List<ShopDto> findAll() {
         db = helper.getReadableDatabase();
         List<ShopDto> list = new ArrayList<>();
-        Cursor cursor = db.query(TABLE_NAME, COLUMNS, null, null, null, null, COLUMN_DATE);
+        Cursor cursor = db.query(TABLE_NAME, COLUMNS, null, null, null, null, ORDER_DATE_DESC);
 
         while (cursor.moveToNext()) {
             ShopDto shopDto = new ShopDto();

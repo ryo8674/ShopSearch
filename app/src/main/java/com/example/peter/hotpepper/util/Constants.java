@@ -64,6 +64,7 @@ public class Constants {
     public static final String TABLE_NAME = "bookmark";
     public static final String COLUMN_ID = "shop_id";
     public static final String COLUMN_DATE = "date";
+    public static final String ORDER_DATE_DESC = COLUMN_DATE + " desc";
     public static final String[] COLUMNS = {COLUMN_ID, COLUMN_DATE};
 
     // DB名、バージョン

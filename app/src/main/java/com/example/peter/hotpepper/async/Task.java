@@ -1,6 +1,7 @@
 package com.example.peter.hotpepper.async;
 
 import android.os.AsyncTask;
+import android.text.TextUtils;
 
 import java.io.IOException;
 
@@ -46,7 +47,7 @@ public class Task extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        if (result.isEmpty()) {
+        if (TextUtils.isEmpty(result)) {
             callback.onError(ERROR_MESSAGE);
             return;
         }

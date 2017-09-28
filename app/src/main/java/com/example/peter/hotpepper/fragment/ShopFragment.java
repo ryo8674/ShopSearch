@@ -106,7 +106,7 @@ public class ShopFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onSuccess(String result) {
 
-        createObject(result);
+        convertObject(result);
 
         if (idList != null) {
             shopDtoList = sortList(shopDtoList, idList);
@@ -142,7 +142,7 @@ public class ShopFragment extends Fragment implements AdapterView.OnItemClickLis
      * JsonをShopDtoのリストに変換
      * @param result Json
      */
-    private void createObject(String result){
+    private void convertObject(String result){
         Gson gson = new GsonBuilder().create();
 
         ShopResultApi shopResultApi = gson.fromJson(result, new TypeToken<ShopResultApi>() {

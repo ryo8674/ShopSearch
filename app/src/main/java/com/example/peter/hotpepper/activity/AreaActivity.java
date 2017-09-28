@@ -59,7 +59,7 @@ public class AreaActivity extends BaseActivity implements AdapterView.OnItemClic
 
     @Override
     public void onSuccess(String result) {
-        createObject(result);
+        convertObject(result);
         AreaAdapter adapter = new AreaAdapter(this, android.R.layout.simple_list_item_1, largeAreaDtoList);
         areaList.setAdapter(adapter);
     }
@@ -71,7 +71,7 @@ public class AreaActivity extends BaseActivity implements AdapterView.OnItemClic
     /**
      * JSONをオブジェクトに変換
      */
-    private void createObject(String result) {
+    private void convertObject(String result) {
         Gson gson = new GsonBuilder().create();
 
         AreaResultApi resultApi = gson.fromJson(result, new TypeToken<AreaResultApi>() {
